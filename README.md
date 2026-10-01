@@ -120,7 +120,7 @@ Agent-Store), lädt sonst irgendwann die **veraltete** Fassung.
 
 ## Herkunft
 
-Abgeleitet aus einem real betriebenen Lieferando-Shop mit Kassensystem-Anbindung und
+Abgeleitet aus einem real betriebenen Online-Bestellshop mit Kassensystem-Anbindung und
 Bon-Druck. Alle Regeln stammen aus tatsächlichen Schäden: Massendruck, offene
 Datenbanken, vertauschte Secrets, verlorene Arbeit. Die Beispiele sind neutralisiert —
 keine Branche, kein Anbietername, kein Projektname.

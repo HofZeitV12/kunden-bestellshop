@@ -1,12 +1,12 @@
 ---
 name: kunden-bestellshop
-description: Ein bestehendes Restaurant-Bestellsystem als Vorlage nehmen und für einen NEUEN Kunden aufsetzen — eigenes Branding (Logo, Farben, Stammdaten, Rechtstexte), eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene WinOrder-Kasse und eigener Bon-Druck. Use when cloning/duplicating the Leckerbissen or HofZeit order shop for another restaurant, when a new customer needs a Lieferando-like ordering website with the same concept but a new logo/branding, when onboarding a second restaurant onto the same template, when rebranding an existing fork, or when asked "wie setze ich das gleiche System für Kunde X auf". Also use before any tenant/schema change to the shared template and when a customer project must stay cleanly separated from the template project.
+description: Ein bestehendes Restaurant-Bestellsystem als Vorlage nehmen und für einen NEUEN Kunden aufsetzen — eigenes Branding (Logo, Farben, Stammdaten, Rechtstexte), eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene WinOrder-Kasse und eigener Bon-Druck. Use when cloning/duplicating the Leckerbissen or HofZeit order shop for another restaurant, when a new customer needs the same kind of ordering website (menu, cart, delivery/pickup, online payment) with a new logo/branding, when onboarding a second restaurant onto the same template, when rebranding an existing fork, or when asked "wie setze ich das gleiche System für Kunde X auf". Also use before any tenant/schema change to the shared template and when a customer project must stay cleanly separated from the template project.
 ---
 
 # Kunden-Bestellshop aus Vorlage aufsetzen
 
-Ein **erprobtes Bestellsystem** (Lieferando-artig: Website → Zahlung → Bon auf der
-Kasse) wird zur **Vorlage**. Pro Kunde entsteht daraus ein **eigenes Projekt** mit
+Ein **erprobtes Bestellsystem** (Online-Bestell-Website mit Lieferung/Abholung:
+Website → Zahlung → Bon auf der Kasse) wird zur **Vorlage**. Pro Kunde entsteht daraus ein **eigenes Projekt** mit
 eigenem Logo, eigener Infrastruktur und eigener Kasse — **gleiches Konzept, nicht
 gleiche Umgebung**.
 
@@ -71,7 +71,7 @@ Soll der Kunde dauerhaft auf der geteilten Vorlage-DB laufen?
 
 | Vorlage | Charakter | Wann |
 |---|---|---|
-| **Lieferando-Shop** (Lieferung/Abholung, WinOrder, Stripe) | reifer Bestellweg, Bon auf Kasse bewiesen | Standard für Restaurants mit Lieferung |
+| **Bestell-Website** (Lieferung/Abholung, WinOrder, Stripe) | reifer Bestellweg, Bon auf Kasse bewiesen | Standard für Restaurants mit Lieferung |
 | **QR-Tisch-System** (Tischbestellung + Web-Store + Admin) | Tischbestellung, eigenes Admin-UI | wenn der Kunde Tisch- statt Lieferbetrieb will |
 
 ---

@@ -13,7 +13,7 @@ und arbeite den Skill vollständig ab. Lies die references/*.md erst, wenn du an
 jeweiligen Stelle bist.
 
 Neuer Kunde: <Name des Restaurants>
-Vorlage: <welches Projekt ist die Basis, z. B. der Leckerbissen-Lieferando-Shop>
+Vorlage: <welches Projekt ist die Basis, z. B. die Leckerbissen-Bestell-Website>
 Ziel: derselbe Bestellweg (Website → Zahlung → Bon auf der Kasse), eigenes Branding,
 eigene Infrastruktur.
 
