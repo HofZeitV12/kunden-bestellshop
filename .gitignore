@@ -1,0 +1,18 @@
+# Geheimnisse und lokale Werte
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+kunden.env
+zugangsdaten.md
+ZUGANGSDATEN.md
+
+# Betriebssystem / Editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Node (falls ein Prüfskript Abhängigkeiten zieht)
+node_modules/
