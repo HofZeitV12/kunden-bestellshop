@@ -106,7 +106,11 @@ Nutze die Skills `legal-de` und `legal-eu`. **Keine** Texte eines anderen Kunden
 - [ ] Artikel-Map im **TypeScript** (`lib/…/articles.ts`)
 - [ ] Artikel-Map im **PowerShell/JSON** (`tools/…-articles.json`)
 
-- [ ] Format-Modul: `StoreName`, `Referer` (Domain), `Agent`, **Order-ID-Präfix**
+- [ ] Format-Modul: `StoreName`, `Referer` (Domain), `Agent`, **OrderID-Präfix**
+      (Vorlage: `LB-<id>` — auf den Kunden anpassen) und `PaymentType`
+- [ ] **Zahlungsart in der Kasse anlegen.** Der `PaymentType`-Text aus der Bestellung
+      (Vorlage: „Online bezahlt") muss im Artikel-/Zahlungsstamm **wörtlich**
+      existieren — sonst ordnet die Kasse die Zahlung nicht zu
 - [ ] Falls hartcodiert: Kassenbenutzer (`WINORDER_USER` / `RESTAURANT`-Konstante)
 
 > ⚠️ **Jede Kasse hat einen eigenen Artikelstamm.** Die Map ist **kundenspezifisch**,

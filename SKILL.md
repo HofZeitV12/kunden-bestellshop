@@ -1,18 +1,23 @@
 ---
 name: kunden-bestellshop
-description: Eine bestehende Online-Bestell-Website (Menü, Warenkorb, Lieferung/Abholung, Online-Zahlung, Kassen-Bon) als Vorlage nehmen und für einen NEUEN Kunden aufsetzen — eigenes Branding (Logo, Farben, Stammdaten, Rechtstexte), eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene Kasse und eigener Bon-Druck. Use when a new restaurant customer needs its own ordering website based on the Leckerbissen template (https://www.leckerbissen.online/website/speisekarte), when cloning or duplicating the template for another restaurant, when onboarding a second restaurant onto the same concept with a new logo/branding, when rebranding an existing fork, or when asked "wie setze ich das gleiche System für einen neuen Restaurant-Kunden auf". Also use before any schema change to the template and when a customer project must stay cleanly separated from the template project.
+description: Ein erprobtes Online-Bestellsystem (Speisekarte, Warenkorb, Lieferung/Abholung, Online-Zahlung, Bon auf der Kasse) als Vorlage nehmen und fuer einen NEUEN Restaurant-Kunden aufsetzen - eigenes Branding, eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene Kasse und eigener Bon-Druck. Use when a new restaurant customer needs its own ordering website based on the proven ordering website template (https://www.leckerbissen.online/website/speisekarte), when cloning or duplicating the template for another restaurant, when onboarding a second restaurant onto the same concept with a new logo/branding, when rebranding an existing fork, or when asked "wie setze ich das gleiche System fuer einen neuen Restaurant-Kunden auf". Also use before any schema change to the template and when a customer project must stay cleanly separated from the template project.
 ---
 
 # Kunden-Bestellshop aus Vorlage aufsetzen
 
-Ein **erprobtes Bestellsystem** (Online-Bestell-Website mit Lieferung/Abholung:
-Website → Zahlung → Bon auf der Kasse) wird zur **Vorlage**. Pro Kunde entsteht
-daraus ein **eigenes Projekt** mit eigenem Logo, eigener Infrastruktur und eigener
-Kasse — **gleiches Konzept, nicht gleiche Umgebung**.
+Ein **erprobtes, live betriebenes Bestellsystem** wird zur **Vorlage**. Pro Kunde
+entsteht daraus ein **eigenes Projekt** mit eigenem Logo, eigener Infrastruktur und
+eigener Kasse — **gleiches Konzept, nicht gleiche Umgebung**.
 
-Diese Anleitung ist **konkret in den Fakten**: sie stammt aus einem real betriebenen
-System. Projektkennungen, Tokens und Serverwerte stehen **nicht** hier — nur **wo**
-sie liegen und **wie** man sie ermittelt.
+```
+Kunde (Browser) → Website (Vercel) → Zahlung (Stripe)
+   → Webhook + Bestätigungsmail (Hetzner-Container) → Datenbank (Supabase)
+   → Kassen-PC (Bridge/Webservice) → Kassen-Software → Bon auf dem Thermodrucker
+```
+
+> **Maßstab dieses Skills:** jede Aussage über den Zustand braucht einen **ausgeführten
+> Befehl**. „Müsste laufen" zählt nicht. Projektkennungen, Tokens und Serverwerte
+> stehen **nicht** hier — nur **wo** sie liegen und **wie** man sie ermittelt.
 
 ---
 
@@ -23,114 +28,138 @@ sie liegen und **wie** man sie ermittelt.
 **🔗 <https://www.leckerbissen.online/website/speisekarte>**
 
 Prüfe dieses System **zuerst** gegen die Wirklichkeit. Es ist der Beweis, dass der
-Bestellweg funktioniert:
+Bestellweg funktioniert. Die Werte unten wurden am 02.10.2026 **live** geprüft:
 
-| Baustein | Was es ist | Prüfen mit |
-|---|---|---|
-| **Website** | Bestellseite `/website/speisekarte` — Menü, Warenkorb, Lieferung/Abholung | Seite + Menü-Endpunkt → HTTP 200 |
-| **Datenbank** | Supabase (geteilte Instanz, oft „Üben" genannt) | Menü-Endpunkt liefert die Artikelzahl; `orders` nimmt Bestellungen auf |
-| **Server** | Hetzner-Container: Zahlungs-Webhook, Bestätigungsmail, Küchenwächter | `GET /health` → `status: ok` |
-| **Kasse** | Kassen-Software im Restaurant, Bon auf Thermodrucker | Export **ohne** Key → HTTP 401 |
+| Baustein | Was es ist | Geprüft mit | Ergebnis |
+|---|---|---|---|
+| **Website** | Bestellseite `/website/speisekarte` — Speisekarte, Warenkorb, Lieferung/Abholung | `GET` der Seite | **HTTP 200** |
+| **Speisekarte** | Menü-Endpunkt der Website | `GET /api/menu` | **HTTP 200, 51 Artikel** |
+| **Stammdaten** | Laufzeit-Config der Website | `GET /api/store` | **HTTP 200** (5 Felder) |
+| **Datenbank** | Supabase-Instanz (EU-Region) | Tabellen + Zeilen lesen | `orders`, `menultems` (51), `project_memory` |
+| **Server** | Hetzner-Container: Zahlungs-Webhook, Bestätigungsmail | `GET /health` | **200 `status: ok`** |
+| **Kasse** | Partner-Export der Website | `GET` **ohne** Key | **HTTP 401** (Auth greift) |
+| **Tresor** | Diagnose des Webhook-Servers | `GET /api/status` **ohne** Token | **HTTP 401** (Auth greift) |
 
 **Der Kernbeweis:** Eine Online-Bestellung läuft **ohne manuelles Kopieren** durch
-bis zum Bon — Website → Zahlung → Datenbank → Bridge → Hotfolder → Kasse → Bon.
+bis zum Bon — Website → Zahlung → Datenbank → Bridge/Webservice → Kasse → Bon.
 
-> **Das Referenzsystem ist die Vorlage, nicht der Bauplan für den Kunden.** Die
-> Vorlage-DB ist geteilt und (Stand heute) ohne RLS. Das ist **kein** Muster zum
-> Nachbauen — für einen Kunden gilt: **eigene** Instanz
-> (`references/infrastruktur.md`) und **eigene** Trennung.
-
----
-
-## Wie die vier Säulen zusammenwirken
-
-Das ist die Architektur, die man für einen neuen Kunden **nachbaut** (ausführlich
-mit Datenfluss: `references/infrastruktur.md`):
-
-```
-Browser → Vercel (Next.js, Checkout) → Stripe (Zahlung)
-   → Hetzner-Webhook (Signatur + Modus-Wache + Mail) → Supabase (orders)
-   → Kassen-PC (Bridge) → Hotfolder → Kasse → Bon
-```
-
-- **Vercel** hostet Website und Checkout. Nach der Zahlung setzt die
-  Erfolgsseite `bezahlt_am` — **schneller als jeder Webhook.**
-- **Stripe** meldet `checkout.session.completed` an **zwei** Endpunkte: einen auf
-  dem Hosting (Status/Kundendaten), einen auf `webhook.<kunde>.de` (Status +
-  **Bestätigungsmail**). Nur der Server schickt Mails.
-- **Hetzner** trägt den Webhook-Container hinter Caddy: vier Pfade durchgelassen,
-  Rest 404. Modus-Wache (`STRIPE_EXPECTED_MODE` + `livemode`) ist der Riegel —
-  die Signatur allein beweist den Modus nicht.
-- **Supabase** hält `orders`, `menultems` (Name historisch, nicht korrigieren) und
-  `project_memory.arch.store_config` (Stammdaten — ein Laufzeit-Interface, jedes
-  Zusatzfeld wird öffentlich sichtbar).
-- **Kasse** holt Bestellungen über den Export-Endpunkt **auf dem Hosting**
-  (`/api/export/winorder`, eigener Kassen-Key; ohne Key → 401).
+> ⚠️ **Die Vorlage ist das Muster, nicht der Bauplan für den Kunden.** Die Vorlage-DB
+> ist mit fremden Projekten **geteilt** und hat **kein RLS** (Supabase meldet das als
+> *kritisch*). Das ist **kein** Muster zum Nachbauen: für jeden Kunden gilt **eigene
+> Instanz** (Standardweg) und **eigene Trennung**.
 
 ---
 
 ## Die eine Regel, die alles andere entscheidet
 
-**Ein Kunde = ein eigenes Projekt.** Eigene Datenbank, eigenes Vercel-Projekt,
-eigene Domain, eigene Zahlungsumgebung, eigener Kassen-Anschluss.
+**Ein Kunde = ein eigenes Projekt.** Eigene Datenbank, eigenes Hosting, eigene Domain,
+eigene Zahlungsumgebung, eigener Kassen-Anschluss.
 
-**Niemals** zwei Restaurants auf **derselben** Datenbank betreiben, solange die
-Kerntabellen keinen Kunden-Schlüssel tragen. Die geteilte Datenbank ist die
-teuerste Falle dieses Systems (siehe `references/template-haerten.md`).
+**Niemals** zwei Restaurants auf **derselben** Datenbank, solange die Kerntabellen
+keinen Kunden-Schlüssel tragen. Die geteilte Datenbank ist die teuerste Falle dieses
+Systems — siehe `references/template-haerten.md`.
+
+| Ebene | Trennung |
+|---|---|
+| Repository | eigenes Repo, eigener Name, frischer Git-Start |
+| Datenbank | eigene Supabase-Instanz (Standardweg) |
+| Hosting | eigenes Vercel-Projekt + eigene Domain |
+| Zahlung | eigene Keys + eigene Webhook-Endpunkte |
+| Server | eigener Container/Port auf dem Server, eigene Server-`.env`, eigener Mail-Absender |
+| Kasse | eigener Hotfolder-Pfad **oder** eigener Webservice-Zugang, eigene Artikelmap |
+
+**Faustregel:** Teilen zwei Kunden irgendwo denselben Schlüssel, dieselbe Tabelle oder
+denselben Endpunkt, ist die Trennung nicht vollständig.
 
 ---
 
 ## Der Ablauf
 
 ```
-0.  Vorlage prüfen              Leckerbissen-Website live kontrollieren (URL oben)
-1.  Kunde befragen              Stammdaten, Zonen, Zeiten, Kasse, Domain → references/intake.md
-2.  Projekt anlegen             neues Repo, Supabase, Vercel, Stripe, Hetzner
-                                → references/infrastruktur.md
-3.  Entbranden                  Logo, Farben, Texte, Kennungen → references/entbranden.md
-4.  Daten füllen                Menü-Seed, Store-Config, Lieferzonen, Öffnungszeiten
-5.  Kasse anbinden              Artikelmap, Bridge, Hotfolder
-                                → references/winorder-kasse.md
-6.  Verifizieren                E2E: Bestellung → Zahlung → Mail → Bon
-                                → references/verifikation.md
-7.  Dokumentieren               docs/START.md, PROJEKT.md, Entscheidungen, Runbook
-                                → über Skill `project-blueprint`
+0.  Vorlage prüfen        Leckerbissen-Website live kontrollieren (URL oben)
+1.  Kunde befragen        zwölf Fragen: Stammdaten, Zonen, Zeiten, Kasse, Domain
+                          → references/intake.md
+2.  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
+                          → references/infrastruktur.md
+3.  Entbranden            Logo, Farben, Texte, Kennungen
+                          → references/entbranden.md
+4.  Daten füllen          Menü-Seed, Stammdaten, Lieferzonen, Öffnungszeiten
+5.  Kasse anbinden        Artikelmap, Bridge/Webservice, Hotfolder, Bon
+                          → references/winorder-kasse.md
+6.  Verifizieren          E2E: Bestellung → Zahlung → Mail → Bon
+                          → references/verifikation.md
+7.  Dokumentieren         START.md, PROJEKT.md, Entscheidungen, Runbook
+                          → über Skill `project-blueprint`
 ```
 
 **Jede Phase endet mit einer Meldung:** was entstanden ist, womit es geprüft wurde,
-was offen blieb. „Müsste laufen" ist keine Aussage — nur ein ausgeführter Befehl
-zählt.
+was offen blieb. Vorlage: Ende von `references/verifikation.md`.
 
 ---
 
-## Entscheidungsbaum: welchen Weg für den neuen Kunden?
+## Entscheidungsbaum
 
 ```
-Soll der Kunde dauerhaft auf der geteilten Vorlage-DB laufen?
+Soll der Kunde auf der geteilten Vorlage-DB laufen?
 ├─ JA  → ⚠️ NICHT ohne Kunden-Schlüssel auf den Kerntabellen.
-│        Erst template-haerten.md abarbeiten. (Noch nicht empfohlen.)
-└─ NEIN → Eigene Supabase-Instanz pro Kunde. ← Standardweg
-          → references/infrastruktur.md, Abschnitt „Eigene Datenbank"
+│        Erst references/template-haerten.md abarbeiten. (Nicht empfohlen.)
+└─ NEIN → Eigene Supabase-Instanz pro Kunde.  ← Standardweg
+          → references/infrastruktur.md, Abschnitt „Datenbank"
+
+Wie holt die Kasse die Bestellungen?
+├─ Hotfolder-Bridge  → Datei je Bestellung in einen überwachten Ordner
+│                      (Bridge läuft auf dem Kassen-PC; Standardweg der Vorlage)
+└─ REST-Webservice   → die Kasse ruft selbst eine URL ab (kein Dauerprozess nötig)
+                       Beides: → references/winorder-kasse.md
 ```
 
-**Kassen-Typ (entscheidet über den Bestellweg):**
-
-```
-Kasse = WinOrder?
-├─ JA  → Hotfolder-Bridge + Artikelmap → references/winorder-kasse.md
-└─ NEIN → anderen Adapter bauen; der Rest der Kette (Zahlung, DB, Mail) bleibt gleich.
-```
-
-**Basis ist immer die Leckerbissen-Vorlage** — dieselbe Bestell-Website, nur mit
-neuer Marke und neuer Umgebung:
-
-| Vorlage | Charakter | Wofür |
-|---|---|---|
-| **Bestell-Website** (Lieferung/Abholung, Kasse, Zahlung) | reifer Bestellweg, Bon auf Kasse bewiesen | Standard für jedes Restaurant mit Lieferung/Abholung |
+**Basis ist immer die Leckerbissen-Vorlage** — dieselbe Bestell-Website, nur mit neuer
+Marke und neuer Umgebung.
 
 ---
 
-## Was ein Kunde **immer** braucht (Mindest-Antworten)
+## Die fünf Kritikalitäten des Bestellwegs
+
+### 1. Zwei Stripe-Endpunkte pro Kunde
+
+Ein Endpunkt auf der **Hosting-Domain** (Status + Kundendaten), einer auf
+`webhook.<kunde>.de` (Status + **Bestätigungsmail**). Nur der Server verschickt Mails.
+Der Mail-Marker (`bestaetigung_mail_am`) wird **ausschließlich** vom Mailserver
+geschrieben — **nicht** an `bezahlt_am` hängen (Race Condition, in der Vorlage real
+passiert und behoben).
+
+### 2. Modus-Wache statt Signatur-Vertrauen
+
+Test- und Live-Events sind **beide** gültig signiert — mit **verschiedenen** Secrets.
+Der Riegel ist die Kombination aus Soll-Modus (`STRIPE_EXPECTED_MODE`) und
+Ist-Modus (`event.livemode`). Bei Konflikt → **409**, keine Datenbankschreibung. Der
+Schlüssel-Präfix allein (`sk_`/`rk_` test/live) genügt nicht.
+
+### 3. Caddy: vier Pfade, Rest 404
+
+Der öffentliche Webhook-Host lässt nur diese Pfade durch:
+`/api/webhooks/stripe*`, `/health`, `/api/status`, `/api/mail-retry`. Fehlt einer,
+ist die Diagnose von außen tot. Der **Kassen-Export gehört nicht hierher**.
+
+### 4. Der Export ans Kassensystem läuft auf dem Hosting
+
+Der Partner-Export (`/api/export/winorder`) läuft auf dem **Vercel-Projekt**, nicht auf
+dem Webhook-Server. Die Kasse ruft ihn mit **eigenem** Key auf. Ein Aufruf **ohne**
+Key muss **HTTP 401** liefern — das ist der Live-Test, dass die Auth greift.
+
+### 5. Git-Autor = Hosting-Teammitglied
+
+Vercel-Hobby-Teams brechen den Deploy ab, wenn der Git-Autor kein Teammitglied ist
+(„not a member"). Autor **vor dem ersten Commit** setzen:
+
+```bash
+git config user.name  <erlaubter-autor>
+git config user.email <erlaubter-autor@users.noreply.github.com>
+```
+
+---
+
+## Was ein Kunde **immer** braucht
 
 Ohne diese sechs Angaben ist jede Struktur geraten. Volle Liste:
 `references/intake.md`.
@@ -148,44 +177,49 @@ Ohne diese sechs Angaben ist jede Struktur geraten. Volle Liste:
 
 ## Die Rebranding-Berührungspunkte (Kurzfassung)
 
-Marke und Kunde stecken **verteilt** im Code, nicht an einer Stelle. Die
-vollständige Abhakliste steht in `references/entbranden.md`. Die Bereiche:
+Marke und Kunde stecken **verteilt** im Code, nicht an einer Stelle. Vollständige
+Abhakliste: `references/entbranden.md`.
 
 | Bereich | Typische Datei(en) |
 |---|---|
-| Farben/Theme | `tailwind.config.js` (Design-Tokens) |
-| Logo/Bilder | Header-Komponente, Hero, `lib/hero-images.ts`, `public/` |
-| Stammdaten | `app/api/store/route.ts` + Wissensspeicher-Key `arch.store_config` |
+| Farben/Theme | Theme-Konfiguration (`tailwind.config.js`) + `globals.css` |
+| Logo/Bilder | Header-Komponente, Hero, Hero-Bilderliste, `public/` |
+| Stammdaten | Store-Route + Wissensspeicher-Key `arch.store_config` (**beide**) |
 | Liefergebiet | Lieferzonen-Modul (PLZ, Mindestwert, Gebühr, Fehlertext) |
 | Öffnungszeiten/Wunschzeit | Öffnungszeiten-Modul |
 | Rechtstexte | Impressum, Datenschutz, AGB |
 | Kassen-Artikelmap | `lib/…/articles.ts` **und** `tools/…-articles.json` |
-| Kassen-Formattexte | Format-Modul (Absendername, Referer, Order-Präfix) |
-| Kundenmail | Webhook-Server: E-Mail-Vorlagen |
-| App/PWA | `manifest`, Service Worker, Icon-Generator, Capacitor |
-| Kennungen im Code | `RESTAURANT`-Konstante, hartcodierte Namen, Middleware-Realm |
+| Kassen-Formattexte | Format-Modul (`StoreName`, `Agent`, `Referer`, `OrderID`-Präfix, `PaymentType`) |
+| Kundenmail | Webhook-Server: E-Mail-Vorlagen, Absender |
+| App/PWA | Manifest, Service Worker, Icon-Generator, Capacitor |
+| Kennungen im Code | `RESTAURANT`-Konstante, hartcodierte Namen, Middleware-Realm, `SITE_URL`-Defaults |
 
-> ⚠️ **Markenreste in Klassennamen.** Ein Fork kopiert historisch gewachsene
-> Farbnamen mit (in der Vorlage 20+ Dateien). Beim Entbranden **alle** Stellen
-> prüfen — nicht nur die `-primary`-Tokens. Die Abschluss-Suche in
-> `references/entbranden.md` findet sie.
+> ⚠️ **Markenreste in Klassennamen.** Ein Fork kopiert historisch gewachsene Farbnamen
+> mit (in der Vorlage 20+ Dateien). Beim Entbranden **alle** Stellen prüfen — nicht nur
+> die `-primary`-Tokens. Die Abschluss-Suche in `references/entbranden.md` findet sie.
 
 ---
 
-## Was den Kunden vom Nachbarn trennt (Trennung erzwingen)
+## Diagnose: den Zustand jedes Bausteins prüfen
 
-| Ebene | Trennung |
-|---|---|
-| Repository | eigenes Repo, eigener Name |
-| Datenbank | eigene Supabase-Instanz (Standardweg) |
-| Hosting | eigenes Vercel-Projekt + eigene Domain |
-| Zahlung | eigene Keys + eigene Webhook-Endpunkte |
-| Server | eigene Container/Ports auf dem Server, eigene Server-.env |
-| E-Mail | eigener Absender + verifizierte Domain |
-| Kasse | eigener Hotfolder-Pfad + eigene Artikelmap |
+Nimm dir **vor Schritt 1** diese Diagnose vor und dokumentiere die echten Antworten.
+Fehlt ein MCP-Tool in deiner Umgebung, prüfe ersatzweise über HTTP(S) oder die Konsole
+des Anbieters.
 
-**Faustregel:** Wenn zwei Kunden irgendwo denselben Schlüssel, dieselbe Tabelle
-oder denselben Endpunkt teilen, ist die Trennung nicht vollständig.
+| Baustein | Prüfung | Erwartet |
+|---|---|---|
+| Supabase | Instanzen auflisten, Zielinstanz wählen | Status **healthy** |
+| Supabase | Tabellen + Zeilen lesen (`orders`, `menultems`, `project_memory`) | vorhanden, plausibel |
+| Supabase | Sicherheits-/Leistungshinweise abrufen | keine kritischen offen |
+| Vercel | Projekte des Teams auflisten | Kundenprojekt gelistet |
+| Vercel | Umgebungsvariablen prüfen (Namen, Modus) | vollständig, richtiger Modus |
+| GitHub | Repo + Hauptzweig lesen, `.env.example` | nur Platzhalter |
+| GitHub | Git-Autor prüfen (`git config user.name`) | Teammitglied des Hostings |
+| Hetzner | Server auflisten, Zielserver lesen | **running**, Firewall aktiv |
+| Hetzner | Firewall-Regeln lesen | nur 22/80/443 (+ Diagnose-Port) |
+| Stripe | Webhook-Endpunkte im Dashboard | `livemode`, `url`, `status` je Endpunkt |
+| Live | Website, `/api/menu`, `/api/store` | **HTTP 200** |
+| Live | Export **ohne** Key; Diagnose **ohne** Token | **HTTP 401** |
 
 ---
 
@@ -203,12 +237,15 @@ Skill **`project-blueprint`**.
 | Datei | Inhalt |
 |---|---|
 | `references/intake.md` | Fragebogen + Ergebnisform |
+| `references/infrastruktur.md` | Zielarchitektur + Supabase, Vercel, Stripe, Hetzner je Kunde, Umgebungsvariablen-Katalog |
+| `references/architektur.md` | Verifizierte Daten- und Dateipfade der Vorlage (Soll-Zustand, den der Fork übernimmt) |
 | `references/entbranden.md` | Vollständige Rebranding-Map als Abhakliste |
-| `references/template-haerten.md` | Vorlage mandantenfähig machen (Kunden-Schlüssel, RLS, Config) |
-| `references/infrastruktur.md` | Gesamtarchitektur + Supabase, Vercel, Stripe, Hetzner je Kunde |
-| `references/winorder-kasse.md` | Artikelmap, Bridge, Hotfolder, Bon-Druck |
+| `references/winorder-kasse.md` | Artikelmap, Bridge, REST-Webservice, Hotfolder, Bon-Druck, Tracking |
 | `references/verifikation.md` | E2E-Abnahme + Prüftabelle |
+| `references/template-haerten.md` | Vorlage mandantenfähig machen (Kunden-Schlüssel, RLS, Config) |
 | `references/regeln-und-fallen.md` | Harte Regeln und teuer gelernte Fehler |
 
 **Verwandte Skills:** `project-blueprint` (Aufbau + Doku), `frontend-design`
-(Branding-Oberfläche).
+(Branding-Oberfläche), `web-design-guidelines` (Barrierefreiheit),
+`supabase-postgres-best-practices` (Schema, RLS, Migrationen), `devops` (CI/CD, Docker),
+`web-app-launch` (Go-Live: Domain, Live-Zahlung, erste Bestellung).

@@ -5,6 +5,10 @@ vielleicht der Server, dann aber mit **getrennten Containern, Ports und `.env`**
 
 > **Grundsatz:** Jede Aussage über den Zustand braucht einen **ausgeführten Befehl**.
 > Werte niemals aus dem Gedächtnis annehmen.
+>
+> **Erst lesen:** Die verifizierte Architektur der Vorlage steht in
+> `references/architektur.md` (Datenfluss, Statusmodell, Tabellen, Dateipfade,
+> Variablen-Katalog). Diese Datei baut darauf auf.
 
 ---
 
@@ -115,8 +119,17 @@ git config user.email <erlaubter-autor@users.noreply.github.com>
 ```sql
 -- Zustand prüfen, nicht annehmen
 select count(*) from public.menultems;
+select count(*) from public.orders;
 select content from public.project_memory where key = 'arch.store_config';
 ```
+
+**Die drei Kerntabellen und ihre Rolle** (Details in `references/architektur.md`):
+
+| Tabelle | Rolle | Kundenbezug |
+|---|---|---|
+| `orders` | Bestellungen, Status, `stripe_mode`, Mail-Tracking | Spalte `restaurant` — **jede** Abfrage filtert darauf |
+| `menultems` | Speisekarte (Name historisch, **nicht** umbenennen) | **kein** Kunden-Schlüssel in der Vorlage → eigene Instanz |
+| `project_memory` | Wissensspeicher; Key `arch.store_config` = Stammdaten (Laufzeit-Interface) | **kein** Kunden-Schlüssel in der Vorlage |
 
 - [ ] Typen generieren und committen (`npm run gen-types` o. ä.)
 
@@ -133,19 +146,21 @@ select content from public.project_memory where key = 'arch.store_config';
 
 | Variable | Zweck | Modus-Hinweis |
 |---|---|---|
-| `SITE_URL`, `NEXT_PUBLIC_SITE_URL` | Kunden-Domain | – |
-| Supabase URL + Anon-Key | Client | öffentlich, RLS-geschützt |
-| Supabase Service-Role | Server (Admin) | **nur serverseitig** |
-| Stripe Secret | Zahlung | **Präfix test/live beachten** |
-| Stripe Webhook-Secret | Signatur | gehört zum **richtigen** Endpunkt |
-| Stripe Publishable | Client | passend zum Secret |
-| Stripe Soll-Modus | Betriebsmodus-Wache | `test` \| `live` |
-| Export-/Kassen-Key | Kassen-Auth | Betriebsschlüssel |
-| Admin-Zugang | Admin-UI | Betriebsschlüssel |
+| `SITE_URL`, `NEXT_PUBLIC_SITE_URL` | Kunden-Domain | auch Ziel der Checkout-Rückkehr |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Client | öffentlich, RLS-geschützt |
+| `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (Alias `SUPABASE_SERVICE_KEY`) | Server (Admin) | **nur serverseitig** |
+| `STRIPE_SECRET_KEY` | Zahlung | **Präfix test/live beachten** |
+| Stripe Publishable Key | Client | passend zum Secret |
+| `STRIPE_EXPECTED_MODE` | Betriebsmodus-Wache | `test` \| `live` |
+| `EXPORT_API_KEY` | Kassen-Auth (`x-api-key`) | Betriebsschlüssel |
+| `ADMIN_USER`, `ADMIN_PASSWORD` | Admin-UI + Partner Basic Auth | Betriebsschlüssel |
+
+> Der vollständige Variablen-Katalog (inkl. der Server-`.env` auf Hetzner) steht in
+> `references/architektur.md`, Abschnitt 9.
 
 - [ ] Domain verbinden (DNS beim Kunden/Registrar), `www`-Redirect prüfen
 - [ ] **Deploy nach dem Setzen der Variablen** — geänderte Env wirkt erst nach Redeploy
-- [ ] Health: Startseite und Menü-Endpunkt antworten
+- [ ] Health: Startseite und Menü-Endpunkt antworten (`/`, `/api/menu` → 200)
 
 > ⚠️ `vercel env pull` liefert für **sensitive** Variablen oft Platzhalter. `.env.local`
 > lokal **manuell** pflegen — nicht blind auf den Pull verlassen.

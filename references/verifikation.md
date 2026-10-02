@@ -34,9 +34,12 @@ sonst alle stoppen, Bauverzeichnis löschen, neu bauen.
 | Zugriff | sensible Tabelle ohne Serverschlüssel lesen | **schlägt fehl** |
 | Trennung | Kunde A sieht **kein** Menü/keine Config von Kunde B | getrennt |
 | Branding | Abschluss-Suche nach Altmarke | kein Treffer in Code/Config/`public` |
+| Bestellweg | Bestellstatus-Modell | `ausstehend` wird **nicht** in die Küche gelassen |
 | Website | Startseite + Speisekarte | HTTP 200 |
 | Menü | Menü-Endpunkt | Artikelzahl des Kunden |
+| Stammdaten | Stammdaten-Endpunkt | **Kunden**daten, keine Altwerte |
 | Kasse | Export **ohne** Key | HTTP 401 |
+| Kasse | Abhol-Endpunkt (REST) | liefert nur `offen`/`ausstehend` |
 | Kasse | Export **mit** Key, Standard | leer im Testbetrieb (gewollt) |
 | Zahlung | Checkout mit leerem Warenkorb | HTTP 400 |
 | Zahlung | Modus-Wache passt zu den Keys | kein 503/409 |

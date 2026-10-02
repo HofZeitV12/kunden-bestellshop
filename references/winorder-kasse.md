@@ -1,9 +1,14 @@
 # Kasse anbinden — Bestellung auf den Bon
 
-Der Weg, der funktioniert, ist eine **Datei-Schnittstelle** (Hotfolder): die Website
-legt je bezahlter Bestellung eine Datei ab, die Kasse beobachtet einen Ordner und
-druckt den Bon. Der REST-Weg ist bei manchen Kassen **tot** — der Hotfolder ist der
-Betriebsweg.
+Beide Betriebswege sind erprobt und liefern **dasselbe Bestellbild**:
+
+| Weg | Wie | Wann sinnvoll |
+|---|---|---|
+| **A — Hotfolder-Bridge** | Ein Prozess auf dem Kassen-PC **pollt** den Export und legt je Bestellung eine Datei in einen überwachten Ordner | Standard der Vorlage; funktioniert auch, wenn die Kasse keinen Webservice hat |
+| **B — REST-Webservice** | Die Kasse **ruft selbst** eine URL ab (`/GetNewOrders`) und meldet den Fortschritt an `/SendTrackingStatus` | wenn die Kasse es kann — kein Dauerprozess, kein Bridge-PC nötig |
+
+Gemeinsame Quelle ist die Bestelltabelle: nur `offen` (bezahlt) geht in die Küche.
+Der Hotfolder-Weg ist unten vollständig beschrieben; der REST-Weg ab Abschnitt 4.
 
 ```
 Website → Zahlung → DB (status=offen)
@@ -93,7 +98,50 @@ einen Kommentar daraus — **keine Umsätze, doppelte Stämme.**
 
 ---
 
-## 4. 🔴 Zwei Regeln, die nie gebrochen werden dürfen
+## 4. Der REST-Weg (Kasse holt selbst)
+
+Wenn die Kasse einen Webservice anbietet, entfällt der Bridge-PC. Aus derselben
+Bestelltabelle speist ein **`GetNewOrders`**-Endpunkt die Kasse, und ein
+**`SendTrackingStatus`**-Endpunkt nimmt den Fortschritt zurück. Beide sind erprobt.
+
+**Einrichtung in der Kasse** (Menü der Kasse → Online-Shops):
+
+| Feld | Wert |
+|---|---|
+| Übertragungsart | Webservice (REST) |
+| Webservice-URL | `https://www.<kunde>.de/api/winorder` |
+| Benutzername / Kennwort | `ADMIN_USER` / `ADMIN_PASSWORD` |
+
+- [ ] Die Kasse **ruft in ihrem Intervall selbst ab** — kein Dauerprozess nötig
+- [ ] Auth wie beim Export: Basic Auth; zusätzlich Kopfzeilen `username`/`password`
+      werden akzeptiert, weil Kassen die Zugangsdaten dorthin schreiben
+- [ ] Der Abhol-Endpunkt liefert nur `offen`/`ausstehend` — **nie** `in_bearbeitung`
+- [ ] Der Endpunkt gibt **WinOrder-JSON** zurück (Content-Type `application/json`)
+
+**Status-Rückmeldung.** Nach Übernahme und bei jedem Fortschritt meldet die Kasse an
+`…/SendTrackingStatus`. Die Codes werden auf die App-Status abgebildet:
+
+| Kassen-Code | Bedeutung | App-Status |
+|---|---|---|
+| `0`, `OK`, `1` | empfangen / wird angenommen | `in_bearbeitung` |
+| `2` | in Zubereitung | `bereit` |
+| `5` | unterwegs | `bereit` |
+| `6` | abgeschlossen | `abgeholt` |
+| `7`, `8`, `10` | abgelehnt / rückerstattet / storniert | `storniert` |
+| `9` | Übernahme fehlgeschlagen | `ausstehend` |
+
+- [ ] Statuscode-Tabelle **je Kasse** dokumentieren (die Codes variieren)
+- [ ] Der Kundenmail-Versand darf die Kassenmeldung **nicht** scheitern lassen
+      (`try/catch` — eine fehlgeschlagene Mail ist kein Kassenfehler)
+- [ ] Testbestellungen (`stripe_mode = test`) **nie** benachrichtigen
+
+> ⚠️ **Beide Wege brauchen dieselbe Artikelmap.** Ob Hotfolder oder REST: die
+> Artikelnamen werden nach derselben Tabelle übersetzt. Sonst ordnet die Kasse falsch
+> zu — oder legt den Artikel neu an.
+
+---
+
+## 5. 🔴 Zwei Regeln, die nie gebrochen werden dürfen
 
 ### Regel 1 — Kein Mengenfilter im echten Hotfolder
 
@@ -116,7 +164,7 @@ bewusst und mit Einverständnis.
 
 ---
 
-## 5. Die Kasse einrichten (Vorbereitung, der Kunde klickt)
+## 6. Die Kasse einrichten (Vorbereitung, der Kunde klickt)
 
 - [ ] Thermodrucker verbunden (Bluetooth!) — Status **„Verbunden"**, nicht nur „gekoppelt"
 - [ ] Kasse: Drucker auswählen, Bon-Typ zuweisen, **Testdruck aus der Kasse** (nicht nur
@@ -136,7 +184,7 @@ bewusst und mit Einverständnis.
 
 ---
 
-## 6. Tracking zurück (Kunde und Küche)
+## 7. Tracking zurück (Kunde und Küche)
 
 Die Kasse meldet Statuscodes zurück; die App bildet sie auf Bestellstatus und
 **Kundenmails** ab (bestellt → in Zubereitung → unterwegs → fertig).
@@ -151,7 +199,7 @@ Die Kasse meldet Statuscodes zurück; die App bildet sie auf Bestellstatus und
 
 ---
 
-## 7. Diagnose „bezahlt, aber kein Bon"
+## 8. Diagnose „bezahlt, aber kein Bon"
 
 Der **häufigste** Fall zuerst prüfen:
 
@@ -191,7 +239,7 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
 
 ---
 
-## 8. Erfolgsdefinition
+## 9. Erfolgsdefinition
 
 Eine Online-Bestellung erscheint **ohne manuelles Kopieren** in der Kassen-Software
 und löst einen **Bon** aus. Erst dann ist die Kassen-Anbindung fertig.

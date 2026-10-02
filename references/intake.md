@@ -18,7 +18,7 @@ Diese zwölf Antworten sind die Grundlage jeder Struktur. Ohne sie ist alles ger
 | 5 | **Stammdaten**: Adresse, Telefon, E-Mail, Öffnungszeiten, Zubereitungszeit | `store_config`, Rechtstexte |
 | 6 | **Liefergebiet**: welche PLZ, welcher Mindestbestellwert, welche Liefergebühr | Lieferzonen-Modul |
 | 7 | **Domain**: welche, wer besitzt sie, wo liegt DNS? | Vercel-Domain, `SITE_URL` |
-| 8 | **Kasse**: welches Kassensystem, wie heißt sein Artikelstamm, physischer Rechner? | WinOrder-Anbindung |
+| 8 | **Kasse**: welches Kassensystem, wie heißt sein Artikelstamm, physischer Rechner? Kann die Kasse selbst einen **Webservice** abrufen, oder braucht sie den **Hotfolder**? | Kassen-Anbindung |
 | 9 | **Zahlung**: eigenes Stripe-Konto oder geteilt? Test- oder Live-Start? | Stripe-Keys, Webhooks |
 | 10 | **Datenbank**: neue Instanz anlegen? (Standard: ja, eigene) | Projektkennung überall |
 | 11 | **E-Mail**: Absenderadresse, wer bekommt Bestätigungen/Alarme? | Webhook-Server, Resend |
@@ -60,7 +60,7 @@ Vor Schritt 2 in dieser Form notieren — Zielort später `docs/PROJEKT.md`:
 | … | … | … € | … € |
 
 **Domain:** … (DNS bei …)
-**Kasse:** … (Artikelstamm: …, Rechner: …)
+**Kasse:** … (Artikelstamm: …, Rechner: … , Weg: Hotfolder/REST)
 **Zahlung:** eigenes Stripe-Konto: ja/nein · Start: test/live
 **Datenbank:** eigene Instanz: ja
 **E-Mail:** Absender …, Bestätigung an … , Alarm an …

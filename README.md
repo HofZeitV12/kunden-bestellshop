@@ -68,7 +68,7 @@ womit geprüft, was offen.
 2  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
 3  Entbranden            Logo, Farben, Texte, Kennungen
 4  Daten füllen          Menü, Store-Config, Lieferzonen, Öffnungszeiten
-5  Kasse anbinden        Artikelmap, Bridge, Hotfolder, Bon
+5  Kasse anbinden        Artikelmap, Bridge/Webservice, Hotfolder, Bon
 6  Verifizieren          E2E: Bestellung → Zahlung → Mail → Bon
 7  Dokumentieren         START.md, PROJEKT.md, Entscheidungen, Runbook
 ```
@@ -96,11 +96,12 @@ Kunden-Schlüssel tragen.
 |---|---|
 | `SKILL.md` | **Der Einstieg.** Ablauf, Entscheidungsbaum, Kurzfassung |
 | `references/intake.md` | Fragebogen + Ergebnisform |
-| `references/entbranden.md` | Vollständige Rebranding-Map als Abhakliste |
-| `references/template-haerten.md` | Vorlage mandantenfähig machen (Tenant, RLS, Config) |
 | `references/infrastruktur.md` | Supabase, Vercel, Stripe, Hetzner je Kunde |
-| `references/winorder-kasse.md` | Artikelmap, Bridge, Hotfolder, Bon-Druck |
+| `references/architektur.md` | Verifizierte Architektur der Vorlage (Datenfluss, Tabellen, Dateipfade, Env-Katalog) |
+| `references/entbranden.md` | Vollständige Rebranding-Map als Abhakliste |
+| `references/winorder-kasse.md` | Artikelmap, Bridge, REST-Webservice, Hotfolder, Bon-Druck, Tracking |
 | `references/verifikation.md` | E2E-Abnahme + Prüftabelle |
+| `references/template-haerten.md` | Vorlage mandantenfähig machen (Kunden-Schlüssel, RLS, Config) |
 | `references/regeln-und-fallen.md` | Harte Regeln und teuer gelernte Fehler |
 
 ---

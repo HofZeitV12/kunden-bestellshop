@@ -35,6 +35,12 @@ Supabase meldet das als **kritisch**: mehrere Tabellen ohne RLS sind über den
 öffentlichen Schlüssel **les- und änderbar**. Auf einer **geteilten** Instanz trifft
 das auch fremde Projekte.
 
+**Verifiziert am 02.10.2026:** Die Vorlage läuft auf einer **geteilten** Instanz. Neben
+den Bestelltabellen liegen dort **fremde** Tabellen (Profile, generische Items,
+Analysen, Aufgaben, Ereignisse, Cloud-Verbindungen). Sechs Tabellen haben RLS **aus**,
+darunter `orders`, `menultems` und `project_memory`. Wer die Instanz teilt, teilt
+deshalb **auch das Risiko der Fremdtabellen**.
+
 > ⚠️ **RLS einfach einschalten blockiert jeden Zugriff.** Ohne Policies kommt danach
 > **kein** Lesen/Schreiben mehr durch. Reihenfolge: **erst Policies definieren, dann
 > aktivieren, dann testen.**
