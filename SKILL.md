@@ -1,9 +1,9 @@
 ---
 name: kunden-bestellshop
-description: Ein erprobtes Online-Bestellsystem (Speisekarte, Warenkorb, Lieferung/Abholung, Online-Zahlung, Bon auf der Kasse) als Vorlage nehmen und fuer einen NEUEN Restaurant-Kunden aufsetzen - eigenes Branding, eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene Kasse und eigener Bon-Druck. Use when a new restaurant customer needs its own ordering website based on the proven ordering website template (https://www.leckerbissen.online/website/speisekarte), when cloning or duplicating the template for another restaurant, when onboarding a second restaurant onto the same concept with a new logo/branding, when rebranding an existing fork, or when asked "wie setze ich das gleiche System fuer einen neuen Restaurant-Kunden auf". Also use before any schema change to the template and when a customer project must stay cleanly separated from the template project.
+description: Eine Online-Bestell-Website fuer Kassensysteme in Deutschland (Speisekarte, Warenkorb, Lieferung/Abholung, Online-Zahlung, Bon auf dem Kassensystem) als Vorlage nehmen und fuer einen NEUEN Restaurant-Kunden aufsetzen - eigenes Branding, eigene Infrastruktur (Supabase, Vercel, Stripe, Hetzner-Container), eigene Kasse und eigener Bon-Druck. Use when a new restaurant customer needs its own ordering website based on a proven German ordering-and-cash-register (Kassensystem) template, when cloning or duplicating the template for another restaurant, when onboarding a second restaurant onto the same concept with a new logo/branding, when rebranding an existing fork, or when asked "wie setze ich das gleiche System fuer einen neuen Restaurant-Kunden auf". Also use before any schema change to the template and when a customer project must stay cleanly separated from the template project.
 ---
 
-# Kunden-Bestellshop aus Vorlage aufsetzen
+# Online-Bestell-Website für Kassensysteme aufsetzen (Deutschland)
 
 Ein **erprobtes, live betriebenes Bestellsystem** wird zur **Vorlage**. Pro Kunde
 entsteht daraus ein **eigenes Projekt** mit eigenem Logo, eigener Infrastruktur und
@@ -23,17 +23,19 @@ Kunde (Browser) → Website (Vercel) → Zahlung (Stripe)
 
 ## Das Referenzsystem (die Vorlage)
 
-**Vorlage ist das Leckerbissen-Projekt.** Die laufende Bestell-Website:
+**Vorlage ist eine laufende Referenz-Bestell-Website** (Online-Bestell-Website mit
+Kassensystem-Anbindung, Deutschland):
 
-**🔗 <https://www.leckerbissen.online/website/speisekarte>**
+**🔗 `<REFERENZ-URL>` — die Bestellseite der Vorlage**
+*(Im Projekt-Intake erfragen oder dem Auftraggeber entnehmen; hier bewusst als
+Platzhalter, damit keine Marke genannt wird.)*
 
 Prüfe dieses System **zuerst** gegen die Wirklichkeit. Es ist der Beweis, dass der
 Bestellweg funktioniert. Die Werte unten wurden am 02.10.2026 **live** geprüft:
 
 | Baustein | Was es ist | Geprüft mit | Ergebnis |
 |---|---|---|---|
-| **Website** | Bestellseite `/website/speisekarte` — Speisekarte, Warenkorb, Lieferung/Abholung | `GET` der Seite | **HTTP 200** |
-| **Speisekarte** | Menü-Endpunkt der Website | `GET /api/menu` | **HTTP 200, 51 Artikel** |
+| **Website** | Bestellseite `/website/speisekarte` — Speisekarte, Warenkorb, Lieferung/Abholung | `GET` der Seite | **HTTP 200** || **Speisekarte** | Menü-Endpunkt der Website | `GET /api/menu` | **HTTP 200, 51 Artikel** |
 | **Stammdaten** | Laufzeit-Config der Website | `GET /api/store` | **HTTP 200** (5 Felder) |
 | **Datenbank** | Supabase-Instanz (EU-Region) | Tabellen + Zeilen lesen | `orders`, `menultems` (51), `project_memory` |
 | **Server** | Hetzner-Container: Zahlungs-Webhook, Bestätigungsmail | `GET /health` | **200 `status: ok`** |
@@ -76,7 +78,7 @@ denselben Endpunkt, ist die Trennung nicht vollständig.
 ## Der Ablauf
 
 ```
-0.  Vorlage prüfen        Leckerbissen-Website live kontrollieren (URL oben)
+0.  Vorlage prüfen        Referenz-Bestell-Website live kontrollieren (URL oben)
 1.  Kunde befragen        zwölf Fragen: Stammdaten, Zonen, Zeiten, Kasse, Domain
                           → references/intake.md
 2.  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
@@ -113,8 +115,8 @@ Wie holt die Kasse die Bestellungen?
                        Beides: → references/winorder-kasse.md
 ```
 
-**Basis ist immer die Leckerbissen-Vorlage** — dieselbe Bestell-Website, nur mit neuer
-Marke und neuer Umgebung.
+**Basis ist immer die Referenz-Bestell-Website** — dieselbe Bestell-Website, nur mit
+neuer Marke und neuer Umgebung.
 
 ---
 

@@ -1,12 +1,13 @@
-# Kunden-Bestellshop — Skill
+# Online-Bestell-Website für Kassensysteme — Skill
 
 **Ein erprobtes Restaurant-Bestellsystem als Vorlage nehmen und für einen neuen Kunden
 aufsetzen** — eigenes Branding, eigene Infrastruktur, eigene Kasse.
 
 Gleiches Konzept (Website → Zahlung → Bon), **neues Logo und neue Umgebung** pro Kunde.
 
-Vorlage ist die laufende Bestell-Website:
-**<https://www.leckerbissen.online/website/speisekarte>**
+Vorlage ist eine laufende Referenz-Bestell-Website (Online-Bestell-Website mit
+Kassensystem-Anbindung, Deutschland): **`<REFERENZ-URL>`** — der Platzhalter steht im
+Auftrag bzw. in `SKILL.md`.
 
 ---
 
@@ -63,7 +64,7 @@ Der Agent arbeitet sieben Schritte ab. Jeder endet mit einer Meldung: was entsta
 womit geprüft, was offen.
 
 ```
-0  Vorlage prüfen        Leckerbissen-Website live kontrollieren
+0  Vorlage prüfen        Referenz-Bestell-Website live kontrollieren
 1  Kunde befragen        Stammdaten, Zonen, Zeiten, Kasse, Domain
 2  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
 3  Entbranden            Logo, Farben, Texte, Kennungen
