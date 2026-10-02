@@ -9,25 +9,24 @@ Abhakliste**. Erst wenn hier alles abgehakt ist, ist der Fork „der neue Kunde"
 
 ---
 
-    10|## 1. Design-Tokens und Farben
+## 1. Design-Tokens und Farben
 
 **Datei:** Theme-Konfiguration (z. B. `tailwind.config.js`) und `app/globals.css`.
 
 - [ ] Primär-, Sekundär-, Akzentfarbe auf die Kundenfarben gesetzt
-- [ ] **Alias-Klassen mitgezogen** — historisch gewachsene alte Farbnamen
-      (Beispiel: ein `*-gruen` aus einem früheren Projekt) zeigen oft **noch** auf die
-      alten Werte. Zeigt die Suche Treffer in 20+ Dateien: **nicht** einzeln umbenennen,
-      sondern die **Aliase auf die neue Farbe zeigen lassen** (kleinste Änderung) — oder
-      bewusst aufräumen, aber dann konsequent.
+- [ ] **Alias-Klassen mitgezogen** — historisch gewachsene alte Farbnamen zeigen oft
+      **noch** auf die alten Werte. Zeigt die Suche Treffer in 20+ Dateien: **nicht**
+      einzeln umbenennen, sondern die **Aliase auf die neue Farbe zeigen lassen**
+      (kleinste Änderung) — oder bewusst aufräumen, aber dann konsequent.
 - [ ] Kontrast geprüft (Text auf Primärfarbe, Buttons, Fokusring) — siehe Skill
       `web-design-guidelines`
 - [ ] Dark-Mode/Flächen (falls vorhanden) mitgezogen
 
-> ⚠️ **Nicht nur die `-primary`-Tokens ändern.** Genau das übersieht die alte Klassen.
+> ⚠️ **Nicht nur die `-primary`-Tokens ändern.** Genau das übersieht die alten Klassen.
 
 ---
 
-    30|## 2. Logo und Bilder
+## 2. Logo und Bilder
 
 - [ ] Header-Logo (`components/…Header…`) — `src`, `alt` (mit Kundenname)
 - [ ] Startseiten-Hero (`components/…Hero…`)
@@ -41,7 +40,7 @@ gehören dokumentiert (Quelle + Lizenz).
 
 ---
 
-    40|## 3. Stammdaten
+## 3. Stammdaten
 
 **Zwei Orte, die auseinanderlaufen können — beide prüfen:**
 
@@ -52,6 +51,12 @@ gehören dokumentiert (Quelle + Lizenz).
 
 > ⚠️ Ändert man nur den Fallback, aber nicht `store_config`, sieht der Kunde **alte**
 > Daten. **Immer beide** auf denselben Stand bringen.
+>
+> ⚠️ **`store_config` ist ein Laufzeit-Interface.** In der Vorlage enthält der Key
+> genau fünf Nutzfelder (`adresse`, `telefon`, `email`, `oeffnungszeiten`,
+> `zubereitungszeit_min`) — weil die Route den Inhalt wörtlich an die Website
+> ausliefert. **Jedes zusätzliche Feld wird öffentlich sichtbar.** Feldnamen nie
+> umbenennen, Werte nur bewusst ändern.
 
 ---
 
@@ -59,7 +64,7 @@ gehören dokumentiert (Quelle + Lizenz).
 
 **Datei:** Lieferzonen-Modul (eine Wahrheit pro Wert).
 
-    60|- [ ] Zonen: Name, PLZ-Liste, Mindestbestellwert, Liefergebühr
+- [ ] Zonen: Name, PLZ-Liste, Mindestbestellwert, Liefergebühr
 - [ ] „Zu weit"-Fehlertext mit den **neuen** Ortsnamen
 - [ ] Falls PLZ online geprüft werden: Anbieter-Endpunkt prüfen (externer Call)
 - [ ] **Betrag im Checkout** wird serverseitig neu gerechnet — Zonen-Werte sind die
@@ -72,7 +77,7 @@ gehören dokumentiert (Quelle + Lizenz).
 
 **Datei:** Öffnungszeiten-Modul (Slots aus Freitext + Zubereitungszeit).
 
-    70|- [ ] Freitext-Öffnungszeiten passend zur Kunden-Angabe
+- [ ] Freitext-Öffnungszeiten passend zur Kunden-Angabe
 - [ ] Vorlaufzeiten (Lieferung/Abholung) plausibel
 - [ ] Geschlossen-Logik (Slots für morgen) getestet
 
@@ -89,7 +94,7 @@ gehören dokumentiert (Quelle + Lizenz).
 Nutze die Skills `legal-de` und `legal-eu`. **Keine** Texte eines anderen Kunden
 übernehmen — Adressen, Zuständigkeiten und Aufbewahrungszeiten unterscheiden sich.
 
-    90|> Der Justiziariat steht beim Kunden, nicht bei dir. Die Texte sind **Vorbereitung**,
+> Der Justiziariat steht beim Kunden, nicht bei dir. Die Texte sind **Vorbereitung**,
 > keine Rechtsberatung — im Impressum/der Doku kenntlich machen.
 
 ---
@@ -106,11 +111,13 @@ Nutze die Skills `legal-de` und `legal-eu`. **Keine** Texte eines anderen Kunden
 
 > ⚠️ **Jede Kasse hat einen eigenen Artikelstamm.** Die Map ist **kundenspezifisch**,
 > kein Copy-Paste-Feld. Grundlage sind echte Bonzeilen **dieser** Kasse.
-> Details: `references/winorder-kasse.md`.
+> Die Kasse ordnet Artikel **per Name** zu — bei Doppelnamen (z. B. ein Belag als
+> Calzone **und** als Pizza) bricht die Zuordnung. Solche Doppel im Menü eindeutig
+> benennen, **bevor** die Map gebaut wird. Details: `references/winorder-kasse.md`.
 
 ---
 
-    110|## 8. Kennungen im Code (verstreut)
+## 8. Kennungen im Code (verstreut)
 
 Suche nach dem alten Namen und ändere **jede** Stelle:
 
@@ -128,13 +135,13 @@ Suche nach dem alten Namen und ändere **jede** Stelle:
 
 ---
 
-    130|## 9. E-Mail
+## 9. E-Mail
 
 - [ ] E-Mail-Vorlagen des Webhook-Servers (`email-templates.mjs`): Logo, Farben,
       Anbieter, Rechtsteil
 - [ ] Absender (`RESEND_FROM`), Reply-To (`RESEND_REPLY_TO`)
 - [ ] Alarm-Empfänger (`ALERT_EMAIL`)
-- [ ] Domain im Resend-Konto **verifiziert** (neue Domain → neue DNS-Einträge)
+- [ ] Domain im Mail-Anbieter **verifiziert** (neue Domain → neue DNS-Einträge)
 
 ---
 
@@ -146,7 +153,7 @@ Suche nach dem alten Namen und ändere **jede** Stelle:
 - [ ] Capacitor/Android: `capacitor.config.ts`, `strings.xml` (falls Mobile-Build)
 - [ ] iOS/Android Bundle-ID, falls Store-Veröffentlichung geplant
 
-    150|---
+---
 
 ## 11. Abschluss-Suche (die Gegenprobe)
 
@@ -164,7 +171,7 @@ Treffer in **Code, Konfiguration oder `public/`** sind ein Fehler.
 
 ---
 
-    170|## Abhakliste „fertig entbrandet"
+## Abhakliste „fertig entbrandet"
 
 - [ ] Farben inkl. Aliase
 - [ ] Logo, Hero, Icons, Fotos

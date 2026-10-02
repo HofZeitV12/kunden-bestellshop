@@ -9,7 +9,7 @@ nicht.
 ## Harte Regeln
 
 1. **Ein Kunde = ein eigenes Projekt.** Eigene DB, eigenes Hosting, eigene Domain,
-    10|   eigene Zahlung, eigener Kassen-Anschluss. Nichts teilen.
+   eigene Zahlung, eigener Kassen-Anschluss. Nichts teilen.
 2. **Erst fragen, dann bauen.** `references/intake.md`. Nichts erfinden, was der Kunde
    beantworten kann.
 3. **Jede Zustandsbehauptung braucht einen ausgeführten Befehl.** „Müsste laufen" ist
@@ -19,7 +19,7 @@ nicht.
 6. **Kein echter Wert in einer getrackten Datei.** Nur Platzhalter + Fundort.
 7. **Der Code gewinnt.** Widerspricht eine Doku dem Code, korrigiere die Doku.
 8. **Ein Wert steht einmal.** Andere Stellen lesen daraus; die Doku **verweist**.
-    20|9. **Dokumentation im selben Vorgang.** Nicht sammeln und später nachtragen.
+9. **Dokumentation im selben Vorgang.** Nicht sammeln und später nachtragen.
 10. **Kundenkennung konsequent.** Jede Bestellung und jeder Filter benutzt die Spalte.
     Sonst liefert der Export ans Kassensystem **nichts**.
 
@@ -37,7 +37,7 @@ brachte die Kasse **zweimal** zum Absturz.
 ### Falle 2 — `status=offen` heißt nicht „alles lief"
 
 Ein Bestellstatus sagt **nichts** über den Mailversand. Nur ein eigener Mail-Zeitstempel
-    30|beweist, dass die Bestätigung raus ist. Prüfe **den**, nicht „bezahlt".
+beweist, dass die Bestätigung raus ist. Prüfe **den**, nicht „bezahlt".
 
 ### Falle 3 — Ein gültiges Webhook-Secret beweist NICHT den Modus
 
@@ -52,12 +52,12 @@ Stammdaten lagen **im Code** (Fallback) **und** in der Datenbank (Config-Key). B
 Branding wurde nur eine geändert → der Kunde sah **alte** Daten.
 
 **Regel:** Ein Wert steht **einmal**. Der Fallback im Code liest aus der Config, statt
-    40|sie zu wiederholen.
+sie zu wiederholen.
 
 ### Falle 5 — Markenrest in Klassennamen
 
 Ein Fork kopierte ein historisches Farbschema, dessen Klassenname die **alte** Marke
-trägt (`…-gruen`) — in **20+ Dateien**. Wer nur die neuen `-primary`-Tokens ändert,
+trägt — in **20+ Dateien**. Wer nur die neuen `-primary`-Tokens ändert,
 lässt die halbe Seite in Altfarben.
 
 **Regel:** Die Abhakliste `references/entbranden.md` vollständig abarbeiten, inkl.
@@ -67,7 +67,7 @@ lässt die halbe Seite in Altfarben.
 
 Die Vorlage-DB war **mit anderen Projekten geteilt**. Kerntabellen (Menü, Config) hatten
 **keinen** Kunden-Schlüssel und **kein** RLS. Mit dem öffentlichen Schlüssel konnte
-    50|jeder diese Zeilen lesen **und ändern** — auch die Spalte, die Test- von Live-
+jeder diese Zeilen lesen **und ändern** — auch die Spalte, die Test- von Live-
 Bestellungen trennt.
 
 **Regel:** Eigene Instanz pro Kunde. Wenn geteilt, dann **erst**
@@ -83,7 +83,7 @@ fehlen. Danach geht **nichts** mehr — Lesen wie Schreiben.
 ### Falle 8 — UTF-8 vs. ANSI
 
 Eine Artikel-JSON wurde als ANSI gelesen → „ö" wurde „Ã¶" → **kein** Schlüssel mit
-    60|Umlaut passte. Die Kasse fand „Pizzabrötchen" nie, der Bon blieb falsch.
+Umlaut passte. Die Kasse fand „Pizzabrötchen" nie, der Bon blieb falsch.
 
 **Regel:** UTF-8 **explizit** lesen. Kassen-Konfigdateien oft ISO-8859-1 — ebenfalls
 explizit.
@@ -95,10 +95,10 @@ die Nummer schrieb ins Leere.
 
 **Regel:** Den Basispfad am **Kassensystem selbst** ablesen, nicht aus dem Gedächtnis.
 
-### Falle 10 — Mehrere Kunden, ein Schlüssel → Datenverlust
+### Falle 10 — Mehrere Sitzungen, ein Repo → Datenverlust
 
-Mehrere Agent-Sitzungen im **selben** Repo mit `git reset`/Branchenwechsel löschten
-    70|**nicht committete** Änderungen — dreimal.
+Mehrere Sitzungen im **selben** Repo mit `git reset`/Branchenwechsel löschten
+**nicht committete** Änderungen — dreimal.
 
 **Regel:** Konfigurationsarbeit sofort committen. Nicht mehrere Sessions parallel im
 selben Repo. Vor Konfig-Arbeit `git status` prüfen.

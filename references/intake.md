@@ -10,7 +10,7 @@ Diese zwölf Antworten sind die Grundlage jeder Struktur. Ohne sie ist alles ger
 ## Die zwölf Fragen
 
 | # | Frage | Wofür |
-    10||---|---|
+|---|---|---|
 | 1 | Wie heißt das Restaurant, in einem Satz — was ist es? | `README.md`, Projektbild, Stammdaten |
 | 2 | Was ist **ausdrücklich nicht** im Umfang? (nur Lieferung? nur Abholung? Tisch?) | verhindert Wildwuchs |
 | 3 | Sprache der Oberfläche und der Dokumentation? | Texte, Bezeichner, Volltextsuche |
@@ -22,7 +22,7 @@ Diese zwölf Antworten sind die Grundlage jeder Struktur. Ohne sie ist alles ger
 | 9 | **Zahlung**: eigenes Stripe-Konto oder geteilt? Test- oder Live-Start? | Stripe-Keys, Webhooks |
 | 10 | **Datenbank**: neue Instanz anlegen? (Standard: ja, eigene) | Projektkennung überall |
 | 11 | **E-Mail**: Absenderadresse, wer bekommt Bestätigungen/Alarme? | Webhook-Server, Resend |
-    30|| 12 | Woran merkt man, dass es **fertig** ist? (Abnahme in einem Satz) | Abnahmekriterien |
+| 12 | Woran merkt man, dass es **fertig** ist? (Abnahme in einem Satz) | Abnahmekriterien |
 
 **Pflichtfragen, die Struktur erzwingen:** 5, 6, 10, 12.
 Nicht beantwortbare Punkte als **offene Frage mit Datum** festhalten — **nicht raten,
@@ -38,7 +38,7 @@ Vor Schritt 2 in dieser Form notieren — Zielort später `docs/PROJEKT.md`:
 ## Kunde: <Name>
 
 **Ein Satz:** …
-    40|
+
 **Im Umfang:** Lieferung / Abholung / Tisch — welche?
 **Nicht im Umfang:** …
 
@@ -50,7 +50,7 @@ Vor Schritt 2 in dieser Form notieren — Zielort später `docs/PROJEKT.md`:
 
 **Stammdaten**
 - Adresse: …
-    50|- Telefon / E-Mail: …
+- Telefon / E-Mail: …
 - Öffnungszeiten: <Freitext, z. B. „Täglich 17:00 – 22:00">
 - Zubereitungszeit: <Minuten>
 
@@ -61,7 +61,7 @@ Vor Schritt 2 in dieser Form notieren — Zielort später `docs/PROJEKT.md`:
 
 **Domain:** … (DNS bei …)
 **Kasse:** … (Artikelstamm: …, Rechner: …)
-    60|**Zahlung:** eigenes Stripe-Konto: ja/nein · Start: test/live
+**Zahlung:** eigenes Stripe-Konto: ja/nein · Start: test/live
 **Datenbank:** eigene Instanz: ja
 **E-Mail:** Absender …, Bestätigung an … , Alarm an …
 **Fertig, wenn:** …
@@ -74,7 +74,7 @@ Vor Schritt 2 in dieser Form notieren — Zielort später `docs/PROJEKT.md`:
 
 ---
 
-    70|## Vor der ersten Zeile Code
+## Vor der ersten Zeile Code
 
 - [ ] Vorlage-Repo gelesen (Struktur, Skripte, Treffer für Markennamen)
 - [ ] Die zwölf Fragen beantwortet oder als offen dokumentiert

@@ -11,7 +11,7 @@ aufnehmen, **ohne** für jeden Kunden ein komplett eigenes Projekt zu bauen.
 
 ## Warum das nötig ist (der Befund)
 
-    10|Die Vorlage ist gewachsen und trägt eine gewachsene Schuld. Bevor ein zweiter Kunde
+Die Vorlage ist gewachsen und trägt eine gewachsene Schuld. Bevor ein zweiter Kunde
 dazukommt, sind drei Dinge zu klären:
 
 ### 1. Kerntabellen haben keinen Kunden-Schlüssel
@@ -23,7 +23,7 @@ dazukommt, sind drei Dinge zu klären:
 | **Wissensspeicher/Config** | Store-Stammdaten (Key `arch.store_config`) | **NEIN** — ein globaler Key |
 
 **Folge:** Auf **einer** Datenbank würden Menü und Stammdaten **aller** Kunden
-   20|kollidieren. Kunde B sieht das Menü von Kunde A.
+kollidieren. Kunde B sieht das Menü von Kunde A.
 
 → **Vor** dem Teilen: `restaurant`-Spalte (oder Kunden-`id`) **in `menultems` und
 `project_memory`** ergänzen und in **allen** Lesestellen filtern. Das ist eine
@@ -52,7 +52,7 @@ Vorgehen: Skill `supabase-postgres-best-practices`. Prüfen:
 ### 3. Rechtstexte und Komponenten sind auf einen Kunden geeicht
 
 → `references/entbranden.md`. Solange Stammdaten in Code **und** in `project_memory`
-    40|liegen, gibt es **zwei** Wahrheiten. Eine davon wird beim nächsten Kunden vergessen.
+liegen, gibt es **zwei** Wahrheiten. Eine davon wird beim nächsten Kunden vergessen.
 
 ---
 
@@ -79,7 +79,7 @@ config/kunde.ts            ← EINE Datei: Name, Farben, Domain, Zonen, Zeiten, 
 > **verweist**, statt Zahlen zu wiederholen.
 
 **Der Test:** Wer eine neue Filiale mit gleicher Marke aufsetzt, ändert **genau eine
-    60|Datei** (`config/kunde.ts`) plus die Umgebung — und nichts sonst.
+Datei** (`config/kunde.ts`) plus die Umgebung — und nichts sonst.
 
 ---
 
@@ -100,7 +100,7 @@ config/kunde.ts            ← EINE Datei: Name, Farben, Domain, Zonen, Zeiten, 
 
 ---
 
-    80|## Migrations-Disziplin
+## Migrations-Disziplin
 
 - **Ein** Migrationsordner pro Projekt (`supabase/migrations/`).
 - Dateiname `JJJJMMTTHHMMSS_kurz_slug.sql`, **rein additiv**

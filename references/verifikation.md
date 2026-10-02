@@ -7,7 +7,7 @@ ausgeführt. War eine Prüfung nicht möglich, steht das dort — mit Grund.
 
 ## Vor der Fehlersuche
 
-    10|Prüfe zuerst, **wie viele Entwicklungsprozesse** laufen. Mehrere auf demselben
+Prüfe zuerst, **wie viele Entwicklungsprozesse** laufen. Mehrere auf demselben
 Bauverzeichnis überschreiben sich gegenseitig und erzeugen Fehler ohne Bezug zur
 Ursache.
 
@@ -21,7 +21,7 @@ sonst alle stoppen, Bauverzeichnis löschen, neu bauen.
 
 ---
 
-    20|## Prüftabelle
+## Prüftabelle
 
 | Bereich | Prüfung | Erwartet |
 |---|---|---|
@@ -35,7 +35,7 @@ sonst alle stoppen, Bauverzeichnis löschen, neu bauen.
 | Trennung | Kunde A sieht **kein** Menü/keine Config von Kunde B | getrennt |
 | Branding | Abschluss-Suche nach Altmarke | kein Treffer in Code/Config/`public` |
 | Website | Startseite + Speisekarte | HTTP 200 |
-| Menü | Menü-Endpunkt | Kundenzahl der Artikel |
+| Menü | Menü-Endpunkt | Artikelzahl des Kunden |
 | Kasse | Export **ohne** Key | HTTP 401 |
 | Kasse | Export **mit** Key, Standard | leer im Testbetrieb (gewollt) |
 | Zahlung | Checkout mit leerem Warenkorb | HTTP 400 |
@@ -48,7 +48,7 @@ sonst alle stoppen, Bauverzeichnis löschen, neu bauen.
 
 ---
 
-    50|## Die E2E-Kette (jede Stufe kann unabhängig ausfallen)
+## Die E2E-Kette (jede Stufe kann unabhängig ausfallen)
 
 ```
 1. Session im richtigen Modus?     Session-ID-Präfix test/live
@@ -67,10 +67,15 @@ from public.orders order by id desc limit 3;
 
 > **Häufigster Ausfall auf dieser Strecke:** Punkt 4 (Mail) oder Punkt 5 (Modus).
 > Erst den Modus prüfen, dann die Mail-Secrets.
+>
+> ⚠️ **Race Condition Mail vs. Erfolgsseite:** Die Erfolgsseite nach der Zahlung setzt
+> `bezahlt_am` sofort — schneller als der Webhook. Wer die Mail an `bezahlt_am`
+> hängt, überspringt den Versand. Der Mail-Marker (`bestaetigung_mail_am`) darf
+> **nur** vom Mailserver geschrieben werden.
 
 ---
 
-    70|## Zugriff prüfen (der wichtigste Sicherheitstest)
+## Zugriff prüfen (der wichtigste Sicherheitstest)
 
 Der Test, der zählt: **mit der öffentlichen Rolle schreiben muss fehlschlagen.**
 Ein **gelungener** Aufruf ist ein **gefundener Fehler**.
@@ -121,7 +126,7 @@ Aus `references/intake.md`, Frage 12: **„Fertig, wenn …"**.
 ## Phase N – <Name>
 
 **Angelegt:** … (mit echten Kennungen)
-    110|**Geprüft:** `<Befehl>` → <Auszug der echten Ausgabe>
+**Geprüft:** `<Befehl>` → <Auszug der echten Ausgabe>
 **Offen:** … und warum.
 **Dokumentation:** welche Dateien nachgezogen wurden.
 ```

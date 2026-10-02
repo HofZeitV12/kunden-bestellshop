@@ -5,9 +5,12 @@ aufsetzen** — eigenes Branding, eigene Infrastruktur, eigene Kasse.
 
 Gleiches Konzept (Website → Zahlung → Bon), **neues Logo und neue Umgebung** pro Kunde.
 
+Vorlage ist die laufende Bestell-Website:
+**<https://www.leckerbissen.online/website/speisekarte>**
+
 ---
 
-    10|## In einen neuen Chat laden — ohne dass es lokal liegt
+## In einen neuen Chat laden — ohne dass es lokal liegt
 
 Cursor, Claude Code oder ein beliebiger Agent mit Netzzugriff:
 
@@ -19,7 +22,7 @@ und arbeite danach. Lies die references/*.md erst, wenn du an der Stelle bist.
 Der Agent holt die Anleitung, befragt zuerst den Kunden und baut dann.
 
 **Ohne Netzzugriff** (Agent kann keine URL öffnen): `SKILL.md` und `references/` in das
-   20|Projekt kopieren, dann:
+Projekt kopieren, dann:
 
 ```
 Lies SKILL.md im Projektstamm und arbeite es ab.
@@ -42,7 +45,7 @@ Copy-Item -Recurse -Force $env:TEMP\kunden-bestellshop\* `
 macOS / Linux:
 
 ```bash
-   40|git clone https://github.com/HofZeitV12/kunden-bestellshop.git /tmp/kunden-bestellshop
+git clone https://github.com/HofZeitV12/kunden-bestellshop.git /tmp/kunden-bestellshop
 cp -r /tmp/kunden-bestellshop/* ~/.cursor/skills/kunden-bestellshop/
 ```
 
@@ -57,10 +60,10 @@ Danach in Cursor `/kunden-bestellshop` aufrufen.
 ## Was der Skill tut
 
 Der Agent arbeitet sieben Schritte ab. Jeder endet mit einer Meldung: was entstanden,
-   60|womit geprüft, was offen.
+womit geprüft, was offen.
 
 ```
-0  Vorlage verstehen     welches Projekt ist die Basis
+0  Vorlage prüfen        Leckerbissen-Website live kontrollieren
 1  Kunde befragen        Stammdaten, Zonen, Zeiten, Kasse, Domain
 2  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
 3  Entbranden            Logo, Farben, Texte, Kennungen
@@ -79,7 +82,7 @@ Antworten, bevor er baut.
 ## Die eine Regel
 
 **Ein Kunde = ein eigenes Projekt.** Eigene Datenbank, eigenes Hosting, eigene Domain,
-   80|eigene Zahlung, eigene Kasse. Nichts teilen — außer vielleicht einen Server, dann
+eigene Zahlung, eigene Kasse. Nichts teilen — außer vielleicht einen Server, dann
 aber mit **getrennten Containern, Ports und `.env`**.
 
 **Nie** zwei Restaurants auf **derselben** Datenbank, solange die Kerntabellen keinen
@@ -94,7 +97,7 @@ Kunden-Schlüssel tragen.
 | `SKILL.md` | **Der Einstieg.** Ablauf, Entscheidungsbaum, Kurzfassung |
 | `references/intake.md` | Fragebogen + Ergebnisform |
 | `references/entbranden.md` | Vollständige Rebranding-Map als Abhakliste |
-   90|| `references/template-haerten.md` | Vorlage mandantenfähig machen (Tenant, RLS, Config) |
+| `references/template-haerten.md` | Vorlage mandantenfähig machen (Tenant, RLS, Config) |
 | `references/infrastruktur.md` | Supabase, Vercel, Stripe, Hetzner je Kunde |
 | `references/winorder-kasse.md` | Artikelmap, Bridge, Hotfolder, Bon-Druck |
 | `references/verifikation.md` | E2E-Abnahme + Prüftabelle |
@@ -105,7 +108,7 @@ Kunden-Schlüssel tragen.
 ## Als Cursor-Skill in einem eigenen Repo aktualisieren
 
 ```powershell
-   100|cd <dieses-repo>
+cd <dieses-repo>
 git pull
 # Änderungen …
 git add -A

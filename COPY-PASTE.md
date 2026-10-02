@@ -13,7 +13,7 @@ und arbeite den Skill vollständig ab. Lies die references/*.md erst, wenn du an
 jeweiligen Stelle bist.
 
 Neuer Kunde: <Name des Restaurants>
-Vorlage: <welches Projekt ist die Basis, z. B. die Leckerbissen-Bestell-Website>
+Vorlage: die Leckerbissen-Bestell-Website (https://www.leckerbissen.online/website/speisekarte)
 Ziel: derselbe Bestellweg (Website → Zahlung → Bon auf der Kasse), eigenes Branding,
 eigene Infrastruktur.
 
@@ -22,13 +22,13 @@ Beginne mit Schritt 1 (Intake) und stelle erst die Fragen, bevor du baust.
 
 ---
 
-    20|## Weg B — Skill liegt lokal im Workspace
+## Weg B — Skill liegt lokal im Workspace
 
 ```
 Nutze den Skill /kunden-bestellshop (Ordner .cursor/skills/kunden-bestellshop).
 
 Neuer Kunde: <Name>
-Vorlage: <Basisprojekt>
+Vorlage: die Leckerbissen-Bestell-Website
 Ziel: gleicher Bestellweg, neue Marke, eigene Infrastruktur.
 
 Erst fragen (references/intake.md), dann bauen. Warte auf meine Antworten.
@@ -40,10 +40,10 @@ Erst fragen (references/intake.md), dann bauen. Warte auf meine Antworten.
 
 ```
 Lies SKILL.md im Projektstamm und arbeite ihn vollständig ab. Die Vertiefungen stehen
-    30|unter references/ — lies sie erst, wenn du an der Stelle bist.
+unter references/ — lies sie erst, wenn du an der Stelle bist.
 
 Neuer Kunde: <Name>
-Vorlage: <Basisprojekt>
+Vorlage: die Leckerbissen-Bestell-Website
 Beginne mit Schritt 1 (Intake) und warte auf meine Antworten.
 ```
 
@@ -56,12 +56,12 @@ Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.
 
 Erstelle mir NUR einen Plan (kein Code): welche Schritte, welche Dateien, welche
 Entscheidungen sind für den Kunden <Name> nötig, ausgehend von der Vorlage
-<Basisprojekt>? Nenne offene Fragen getrennt.
+Leckerbissen-Bestell-Website? Nenne offene Fragen getrennt.
 ```
 
 ---
 
-    50|## Weg E — Bestehenden Fork auf eine neue Marke umstellen
+## Weg E — Bestehenden Fork auf eine neue Marke umstellen
 
 ```
 Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
@@ -76,7 +76,7 @@ Abschnitt, was geändert wurde. Am Ende die Abschluss-Suche nach Altmarken.
 ## Weg F — Vorlage härten (bevor ein zweiter Kunde dazukommt)
 
 ```
-    60|Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
+Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
 und arbeite references/template-haerten.md ab.
 
 Ziel: die Vorlage so umbauen, dass alle kundenspezifischen Werte aus EINER Config
@@ -91,6 +91,6 @@ Zeige mir zuerst den Plan und die betroffenen Stellen, dann bauen.
 ## Kurz-Prompt (wenn es schnell gehen soll)
 
 ```
-/kunden-bestellshop  Neuer Kunde: <Name>. Vorlage: <Basisprojekt>.
+/kunden-bestellshop  Neuer Kunde: <Name>. Vorlage: Leckerbissen-Bestell-Website.
 Erst fragen, dann bauen.
 ```

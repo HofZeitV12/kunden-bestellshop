@@ -6,7 +6,7 @@ druckt den Bon. Der REST-Weg ist bei manchen Kassen **tot** — der Hotfolder is
 Betriebsweg.
 
 ```
-    10|Website → Zahlung → DB (status=offen)
+Website → Zahlung → DB (status=offen)
    → Bridge (Poll alle N Sekunden)   holt offene Bestellungen
    → Hotfolder                        schreibt Kassen-JSON je Bestellung
    → Kassen-Software                  parst, ordnet dem Shop zu
@@ -18,7 +18,7 @@ Betriebsweg.
 (auch `storniert`).
 
 > ⚠️ **`ausstehend` ist NICHT bezahlt.** Der Status wird beim Anlegen gesetzt, **bevor**
->    20|der Kunde zahlt. Würde die Bridge ihn im Live-Betrieb abholen, könnte ein
+> der Kunde zahlt. Würde die Bridge ihn im Live-Betrieb abholen, könnte ein
 > abgebrochener Checkout einen Bon für eine unbezahlte Bestellung drucken. Nur der
 > Zahlungs-Webhook setzt `offen`.
 >
@@ -98,7 +98,7 @@ einen Kommentar daraus — **keine Umsätze, doppelte Stämme.**
 ### Regel 1 — Kein Mengenfilter im echten Hotfolder
 
 Ein Testmodus-Filter ist ein **Mengenfilter**, kein Einzeltest. Er schreibt **jede**
-    90|Testbestellung der Datenbank auf einmal in den Hotfolder.
+Testbestellung der Datenbank auf einmal in den Hotfolder.
 
 | Aufruf | Wirkung | Bon? |
 |---|---|---|
@@ -116,7 +116,7 @@ bewusst und mit Einverständnis.
 
 ---
 
-    110|## 5. Die Kasse einrichten (Vorbereitung, der Kunde klickt)
+## 5. Die Kasse einrichten (Vorbereitung, der Kunde klickt)
 
 - [ ] Thermodrucker verbunden (Bluetooth!) — Status **„Verbunden"**, nicht nur „gekoppelt"
 - [ ] Kasse: Drucker auswählen, Bon-Typ zuweisen, **Testdruck aus der Kasse** (nicht nur
@@ -126,6 +126,9 @@ bewusst und mit Einverständnis.
       (Auto-Create schreibt jeden falschen Namen als neuen Artikel → Müll im Stamm)
 - [ ] Hotfolder existiert und wird beobachtet
 - [ ] Auto-Druck für Shop-Bestellungen aktiv
+- [ ] **Zahlungsart anlegen:** Der `PaymentType`-Text aus der Bestellung (z. B.
+      „Online bezahlt") muss in der Kasse unter Stammdaten/Zahlungsarten existieren,
+      sonst ordnet die Kasse die Zahlung nicht zu.
 
 > ⚠️ **Konfigurationsdateien der Kasse nie mit falschem Encoding** lesen/schreiben
 > (oft ISO-8859-1). Und: die Kasse liest beim **Start**, schreibt beim **Beenden** —
@@ -188,7 +191,7 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
 
 ---
 
-    180|## 8. Erfolgsdefinition
+## 8. Erfolgsdefinition
 
 Eine Online-Bestellung erscheint **ohne manuelles Kopieren** in der Kassen-Software
 und löst einen **Bon** aus. Erst dann ist die Kassen-Anbindung fertig.
