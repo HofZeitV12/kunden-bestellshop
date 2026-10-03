@@ -3,12 +3,16 @@
 Immer **einen** Block wählen und in den neuen Chat einfügen. Kein Ersatz für die
 Antworten auf die Intake-Fragen — der Agent fragt danach ohnehin.
 
+> **Von jedem Rechner nutzbar:** Alle Blöcke laden den Skill über die feste
+> `main`-URL des **öffentlichen** Repos. Es liegt **nichts** lokal nötig — kein Klon,
+> kein Token, keine Installation. Nur der Block, der Skill und ein Chat.
+
 ---
 
-## Weg A — mit Netzzugriff (empfohlen)
+## Weg A — mit Netzzugriff, auf jedem Rechner (empfohlen)
 
 ```
-Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
+    10|Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
 und arbeite den Skill vollständig ab. Lies die references/*.md erst, wenn du an der
 jeweiligen Stelle bist.
 
@@ -17,7 +21,7 @@ Vorlage: das Muster „Leckerbissen" (https://www.leckerbissen.online) — eine
 Online-Bestell-Website mit WinOrder-Kassen-Anbindung und Bon am STAR mPOP.
 Ziel: derselbe Bestellweg (Website → Zahlung → Bon auf dem Kassensystem), dieselben
 Funktionen, eigenes Branding, eigene Infrastruktur.
-
+    20|
 Beginne mit Schritt 1 (Intake) und stelle erst die Fragen, bevor du baust.
 ```
 
@@ -97,3 +101,23 @@ Zeige mir zuerst den Plan und die betroffenen Stellen, dann bauen.
 /kunden-bestellshop  Neuer Kunde: <Name>. Vorlage: das Muster „Leckerbissen"
 (Bestell-Website mit WinOrder-Kassen-Anbindung). Erst fragen, dann bauen.
 ```
+
+---
+
+## Wenn der Agent die Skill-URL nicht öffnen kann
+
+Manche Umgebungen laden keine URLs. Dann die Dateien **einmal** holen und mitgeben:
+
+- `SKILL.md` (Pflicht) — enthält den vollständigen Ablauf
+- `references/` (alle 8 Dateien) — werden erst an der jeweiligen Stelle gebraucht
+- `COPY-PASTE.md` (optional) — nur diese Blöcke
+
+Herunterladen als Zip (auf jedem Rechner, ohne Git):
+
+```
+https://github.com/HofZeitV12/kunden-bestellshop/archive/refs/heads/main.zip
+```
+
+Danach in den Chat: „Lies `SKILL.md` im Projektstamm und arbeite ihn ab." — mehr braucht
+es nicht. **Der Skill enthält keine Zugangsdaten**, er darf also offen weitergegeben
+werden.

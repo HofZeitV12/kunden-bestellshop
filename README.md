@@ -38,6 +38,33 @@ Fertige Textbausteine für beide Wege: [COPY-PASTE.md](COPY-PASTE.md)
 
 ---
 
+## Auf einem anderen Computer nutzen
+
+Das Repo ist **öffentlich** — der Skill ist damit **von jedem Rechner erreichbar**, ohne
+Einladung, ohne Token, ohne dass dieses Repo vorher dort liegt. Kontrolle:
+
+```powershell
+Invoke-WebRequest https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md `
+  -UseBasicParsing | Select-Object StatusCode     # erwartet: 200
+```
+
+Drei Wege, je nach Rechner:
+
+| Situation | Vorgehen |
+|---|---|
+| **Agent mit Netzzugriff**, sonst nichts | Nur die Raw-URL laden lassen (siehe oben) — **kein** Klon, keine Installation nötig |
+| **Cursor auf dem neuen Rechner**, Skill als `/kunden-bestellshop` | Klonen (siehe „Als Cursor-Skill installieren") — der Ordner **muss** `kunden-bestellshop` heißen |
+| **Kein Netzzugriff** | `SKILL.md` + `references/` + `COPY-PASTE.md` herunterladen und ins Projekt legen |
+
+> ⚠️ **Nur die Dateien bewegen, nie Zugangsdaten.** Der Skill enthält **keine** Server-IP,
+> keine DB-Kennung und keine Keys — die Werte bleiben in den Umgebungen der einzelnen
+> Kundenprojekte. Das ist Absicht und darf sich nicht ändern.
+>
+> ⚠️ **Auf dem neuen Rechner nicht doppelt ablegen** (siehe Kasten unten). Ein Skill aus
+> zwei Orten lädt irgendwann die veraltete Fassung.
+
+---
+
 ## Als Cursor-Skill installieren
 
 PowerShell (Windows) — ein Befehl:
@@ -148,6 +175,24 @@ git add -A
 git commit -m "Skill: …"
 git push
 ```
+
+## Änderungen sofort für alle Rechner verfügbar machen
+
+Der Skill gehört **nicht** auf den Kunden-PC und **nicht** in ein Kundenprojekt. Er ist
+die **Vorlage**: er liegt hier im Repo und wird von überall geladen.
+
+```powershell
+cd <dieses-repo>
+git pull
+# Änderungen …
+git add -A
+git commit -m "Skill: …"
+git push
+```
+
+Nach dem Push ist die neue Fassung **sofort** für jeden anderen Rechner da (der Agent
+lädt `main`). Auf einem Rechner, der den Skill **geklont** hat, einmal `git pull` —
+danach ist er wieder auf demselben Stand.
 
 Das Repo ist die **einzige Quelle**. Wer den Skill zweimal ablegt (im Repo **und** im
 Agent-Store), lädt sonst irgendwann die **veraltete** Fassung.
