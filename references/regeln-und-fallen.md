@@ -116,6 +116,24 @@ Geänderte Hosting-Variablen wirken **erst nach Redeploy**. Nur Server-`.env` ge
 
 **Regel:** Nach jeder Env-Änderung neu ausrollen und prüfen.
 
+### Falle 13 — Ein MCP „grün" zu nennen ist kein Nachweis
+
+Beim Prüfen des laufenden Musters (03.10.2026) waren die Werkzeuge **nicht** alle
+einsatzbereit — obwohl ihre Namen verfügbar aussahen:
+
+- **Supabase-MCP:** Antwort auf die Ziel-Instanz = *„keine Berechtigung"* → Schema und
+  Zeilen ließen sich nur über die **HTTP-API** prüfen.
+- **Vercel-MCP:** Nutzer-Ebene erreichbar, aber für die **Team-Ressourcen** `403`
+  („re-authenticate to this scope").
+- **Hetzner-MCP:** **Verbindung im Fehlerzustand** (Tool-Discovery fehlgeschlagen);
+  der Server war nur per **SSH** prüfbar.
+- **Nur** GitHub- und Resend-MCP antworteten.
+
+**Regel:** Für jede Zustandsaussage den **ausgeführten** Befehl nennen — und wenn ein
+MCP fehlt oder streikt, **ersatzweise** per HTTP, SSH oder Dashboard prüfen. Ein
+Werkzeug zu besitzen heißt nicht, es nutzen zu können. Die beobachteten Grenzen stehen
+in `references/referenz-leckerbissen.md`, Abschnitt 8.
+
 ---
 
 ## Verbote

@@ -131,7 +131,12 @@ select content from public.project_memory where key = 'arch.store_config';
 | `menultems` | Speisekarte (Name historisch, **nicht** umbenennen) | **kein** Kunden-Schlüssel in der Vorlage → eigene Instanz |
 | `project_memory` | Wissensspeicher; Key `arch.store_config` = Stammdaten (Laufzeit-Interface) | **kein** Kunden-Schlüssel in der Vorlage |
 
-- [ ] Typen generieren und committen (`npm run gen-types` o. ä.)
+- [ ] Typen generieren und committen (Vorlage: `npm run gen-types` o. ä.)
+
+> ⚠️ **Die Skript-Namen sind pro Projekt verschieden.** Im Muster existiert **kein**
+> `check` und **kein** `gen-types` — vorhanden sind `dev`, `build`, `start`, `lint`,
+> `gen-icons` (siehe `package.json`). **Immer erst `package.json` lesen**, dann den
+> Typen-/Prüfbefehl nennen. Ein erfundener Skriptname ist ein toter Befehl.
 
 > ⚠️ **Kundenkennung konsequent setzen.** Wenn die Bestelltabelle eine Kundenspalte
 > hat, muss **jede** Bestellung und **jeder** Filter sie benutzen. Sonst liefert der
@@ -168,6 +173,15 @@ select content from public.project_memory where key = 'arch.store_config';
 > ⚠️ **`SITE_URL` steht im Checkout-Code als Fallback.** Wird sie nicht sauber
 > gesetzt, zeigen `success_url`/`cancel_url` auf die falsche Domain und der Kunde
 > landet nach der Zahlung auf einer fremden Seite.
+
+> ⚠️ **Git-Autor = Team-Mitglied.** Bei Vercel-Hobby bricht der Deploy ab, wenn der
+> Git-Autor kein Mitglied ist („not a member"). Vor dem ersten Commit setzen
+> (`git config user.name/email`).
+
+> ⚠️ **Vercel-Projekte liegen in einem Team-Scope.** Ein MCP-/CLI-Token, das nur auf
+> Nutzer-Ebene autorisiert ist, liefert für Team-Ressourcen **403 „re-authenticate to
+> this scope"**. Zugriff neu autorisieren oder über das Dashboard prüfen — kein Grund,
+> die Umgebung als „nicht vorhanden" zu behandeln.
 
 ---
 

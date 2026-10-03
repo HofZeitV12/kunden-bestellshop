@@ -21,34 +21,44 @@ Kunde (Browser) → Website (Vercel) → Zahlung (Stripe)
 
 ---
 
-## Das Referenzsystem (die Vorlage)
+## Das Referenzsystem (die Vorlage) — konkret
 
-**Vorlage ist eine laufende Referenz-Bestell-Website** (Online-Bestell-Website mit
-Kassensystem-Anbindung, Deutschland):
+**Vorlage ist das laufende Muster „Leckerbissen"** (Tarmstedt, Deutschland): eine
+Bestell-Website mit Anbindung an das Kassensystem **WinOrder** und Bondrucker
+**STAR mPOP**. Es ist **einmal komplett gebaut und mit echtem Geld bewiesen** — der
+neue Kunde bekommt **dieselbe Website, dieselben Funktionen und denselben Aufbau**,
+nur mit **neuer Marke und eigener Infrastruktur**.
 
-**🔗 `<REFERENZ-URL>` — die Bestellseite der Vorlage**
-*(Im Projekt-Intake erfragen oder dem Auftraggeber entnehmen; hier bewusst als
-Platzhalter, damit keine Marke genannt wird.)*
+**🔗 Muster-Bestellseite:** `https://www.leckerbissen.online/website/speisekarte`
+Vollständig beschrieben in **`references/referenz-leckerbissen.md`**.
 
-Prüfe dieses System **zuerst** gegen die Wirklichkeit. Es ist der Beweis, dass der
-Bestellweg funktioniert. Die Werte unten wurden am 02.10.2026 **live** geprüft:
+Prüfe das Muster **zuerst** gegen die Wirklichkeit. Es ist der Beweis, dass der
+Bestellweg funktioniert. Die Werte unten wurden am **03.10.2026** von außen **live**
+geprüft:
 
 | Baustein | Was es ist | Geprüft mit | Ergebnis |
 |---|---|---|---|
-| **Website** | Bestellseite `/website/speisekarte` — Speisekarte, Warenkorb, Lieferung/Abholung | `GET` der Seite | **HTTP 200** || **Speisekarte** | Menü-Endpunkt der Website | `GET /api/menu` | **HTTP 200, 51 Artikel** |
-| **Stammdaten** | Laufzeit-Config der Website | `GET /api/store` | **HTTP 200** (5 Felder) |
+| **Website** | Bestellseite `/website/speisekarte` | `GET` der Seite | **HTTP 200** |
+| **Speisekarte** | Menü-Endpunkt der Website | `GET /api/menu` | **HTTP 200, 51 Artikel** |
+| **Stammdaten** | Laufzeit-Config der Website | `GET /api/store` | **HTTP 200** (genau 5 Felder) |
 | **Datenbank** | Supabase-Instanz (EU-Region) | Tabellen + Zeilen lesen | `orders`, `menultems` (51), `project_memory` |
 | **Server** | Hetzner-Container: Zahlungs-Webhook, Bestätigungsmail | `GET /health` | **200 `status: ok`** |
 | **Kasse** | Partner-Export der Website | `GET` **ohne** Key | **HTTP 401** (Auth greift) |
 | **Tresor** | Diagnose des Webhook-Servers | `GET /api/status` **ohne** Token | **HTTP 401** (Auth greift) |
 
 **Der Kernbeweis:** Eine Online-Bestellung läuft **ohne manuelles Kopieren** durch
-bis zum Bon — Website → Zahlung → Datenbank → Bridge/Webservice → Kasse → Bon.
+bis zum Bon — Website → Zahlung → Datenbank → Bridge/Webservice → Kasse → Bon
+(im Muster mit echter Karte belegt: Order #32 → Rechnung #6457).
 
-> ⚠️ **Die Vorlage ist das Muster, nicht der Bauplan für den Kunden.** Die Vorlage-DB
+> ⚠️ **Das Muster ist die Vorlage, nicht der Bauplan für den Kunden.** Die Muster-DB
 > ist mit fremden Projekten **geteilt** und hat **kein RLS** (Supabase meldet das als
 > *kritisch*). Das ist **kein** Muster zum Nachbauen: für jeden Kunden gilt **eigene
 > Instanz** (Standardweg) und **eigene Trennung**.
+>
+> 🔒 **Keine Zugangsdaten im Skill.** Dieses Repo ist **öffentlich**. Server-IP,
+> SSH-Schlüssel, Datenbank-Kennungen, Keys und Projekt-IDs stehen **nicht** hier,
+> sondern im Zugangsregister des jeweiligen Projekts — der Skill nennt nur **wo** sie
+> liegen und **wie** man sie ermittelt.
 
 ---
 
@@ -78,7 +88,7 @@ denselben Endpunkt, ist die Trennung nicht vollständig.
 ## Der Ablauf
 
 ```
-0.  Vorlage prüfen        Referenz-Bestell-Website live kontrollieren (URL oben)
+0.  Vorlage prüfen        Muster „Leckerbissen" live kontrollieren (Tabelle oben)
 1.  Kunde befragen        zwölf Fragen: Stammdaten, Zonen, Zeiten, Kasse, Domain
                           → references/intake.md
 2.  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
@@ -115,8 +125,9 @@ Wie holt die Kasse die Bestellungen?
                        Beides: → references/winorder-kasse.md
 ```
 
-**Basis ist immer die Referenz-Bestell-Website** — dieselbe Bestell-Website, nur mit
-neuer Marke und neuer Umgebung.
+**Basis ist immer das Muster „Leckerbissen"** — dieselbe Bestell-Website, nur mit
+neuer Marke und neuer Umgebung. Den vollständigen Klon-Fahrplan und die Werkzeug-Grenzen
+enthält `references/referenz-leckerbissen.md`.
 
 ---
 
@@ -215,13 +226,19 @@ des Anbieters.
 | Supabase | Sicherheits-/Leistungshinweise abrufen | keine kritischen offen |
 | Vercel | Projekte des Teams auflisten | Kundenprojekt gelistet |
 | Vercel | Umgebungsvariablen prüfen (Namen, Modus) | vollständig, richtiger Modus |
+| Vercel | **Git-Autor** = Team-Mitglied (bei Hobby-Pflicht!) | Deploy **nicht** „not a member" |
 | GitHub | Repo + Hauptzweig lesen, `.env.example` | nur Platzhalter |
-| GitHub | Git-Autor prüfen (`git config user.name`) | Teammitglied des Hostings |
 | Hetzner | Server auflisten, Zielserver lesen | **running**, Firewall aktiv |
 | Hetzner | Firewall-Regeln lesen | nur 22/80/443 (+ Diagnose-Port) |
+| Hetzner | Container-Health (`/health`) | **200 `status: ok`** |
 | Stripe | Webhook-Endpunkte im Dashboard | `livemode`, `url`, `status` je Endpunkt |
 | Live | Website, `/api/menu`, `/api/store` | **HTTP 200** |
 | Live | Export **ohne** Key; Diagnose **ohne** Token | **HTTP 401** |
+
+> ⚠️ **Ein MCP „grün" ist kein Nachweis.** Fehlt ein MCP-Tool oder ist es im
+> Fehlerzustand, wird ersatzweise per **HTTP, SSH oder Dashboard** geprüft. Die
+> tatsächlich beobachteten Grenzen der MCPs stehen in
+> `references/referenz-leckerbissen.md`, Abschnitt 8.
 
 ---
 
@@ -238,6 +255,7 @@ Skill **`project-blueprint`**.
 
 | Datei | Inhalt |
 |---|---|
+| `references/referenz-leckerbissen.md` | **Das konkrete Muster** (Leckerbissen ↔ WinOrder): Funktionen, Live-Nachweis, Klon-Fahrplan, Werkzeug-Grenzen |
 | `references/intake.md` | Fragebogen + Ergebnisform |
 | `references/infrastruktur.md` | Zielarchitektur + Supabase, Vercel, Stripe, Hetzner je Kunde, Umgebungsvariablen-Katalog |
 | `references/architektur.md` | Verifizierte Daten- und Dateipfade der Vorlage (Soll-Zustand, den der Fork übernimmt) |

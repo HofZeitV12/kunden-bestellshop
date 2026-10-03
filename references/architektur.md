@@ -123,6 +123,11 @@ Spalten, die der Bestellweg nutzt (verifiziert):
 Key-Value-Speicher mit Historie (`project_memory_history`, append-only). Konvention:
 `key = <bereich>.<thema>`.
 
+> ⚠️ **Exaktes DDL.** Migrationen und Prüfcode müssen die echten Spalten treffen:
+> `project_memory` hat **`key` + `content`** (nicht `value`); `menultems` hat
+> **`verfuegbar`** (nicht `aktiv`). Wer diese Namen errät, bricht den Bestellweg.
+> Namen **am lebenden Schema ablesen**, nicht aus dem Gedächtnis schreiben.
+
 - **`arch.store_config`** ist die **Laufzeit-Wahrheit** der Stammdaten. Die Store-Route
   der Website liest diesen Key und liefert seinen Inhalt **wörtlich** aus.
 - Verifizierte Felder: `adresse`, `telefon`, `email`, `oeffnungszeiten`,
@@ -166,7 +171,10 @@ eigene Instanz, RLS **mit Policies** (nicht einfach einschalten — siehe
 
 ## 6. Server (Hetzner)
 
-- **KVM-VPS** (Vorlage: 8 Cores / 16 GB / Ubuntu 24.04), Docker Compose hinter Caddy.
+- **KVM-VPS**, Docker Compose hinter Caddy. Die Vorlage nutzt ein kleines Cloud-Abo
+  (ein Server trägt Webhook + Mail + Wächter für **einen** Kunden); für weitere Kunden
+  entweder ein eigener Server oder **getrennte Container/Ports/`.env`** auf demselben.
+  Die tatsächliche Größe wird am Server abgelesen (`nproc`, `free -h`), nicht angenommen.
 - Gehört zum Webhook/Container-Betrieb: **Zahlungs-Webhook**, **Bestätigungsmail**,
   **Küchenwächter** (meldet hängende bezahlte Bestellungen).
 - **Caddy** ist die einzige öffentliche Fläche: vier Pfade, Rest 404.

@@ -5,9 +5,14 @@ aufsetzen** — eigenes Branding, eigene Infrastruktur, eigene Kasse.
 
 Gleiches Konzept (Website → Zahlung → Bon), **neues Logo und neue Umgebung** pro Kunde.
 
-Vorlage ist eine laufende Referenz-Bestell-Website (Online-Bestell-Website mit
-Kassensystem-Anbindung, Deutschland): **`<REFERENZ-URL>`** — der Platzhalter steht im
-Auftrag bzw. in `SKILL.md`.
+Vorlage ist das **fertige, live betriebene Muster „Leckerbissen"** (Tarmstedt, Deutschland)
+— eine Bestell-Website mit WinOrder-Kassen-Anbindung und STAR-mPOP-Bon:
+**`https://www.leckerbissen.online/website/speisekarte`**.
+
+> **Das Muster ist einmal komplett gebaut und mit echtem Geld bewiesen.** Ein neuer Kunde
+> bekommt **dieselbe Website, dieselben Funktionen und denselben Aufbau** — nur mit
+> eigener Marke, eigener Infrastruktur und eigener Kasse. Vollständig beschrieben in
+> `references/referenz-leckerbissen.md`.
 
 ---
 
@@ -35,26 +40,31 @@ Fertige Textbausteine für beide Wege: [COPY-PASTE.md](COPY-PASTE.md)
 
 ## Als Cursor-Skill installieren
 
-PowerShell (Windows):
+PowerShell (Windows) — ein Befehl:
 
 ```powershell
-git clone https://github.com/HofZeitV12/kunden-bestellshop.git $env:TEMP\kunden-bestellshop
-Copy-Item -Recurse -Force $env:TEMP\kunden-bestellshop\* `
-  "$env:LOCALAPPDATA\Cursor\AgentStores\cursor_agent_stores\<store-id>\files\skills\kunden-bestellshop\"
+git clone https://github.com/HofZeitV12/kunden-bestellshop.git `
+  "$env:USERPROFILE\.cursor\skills\kunden-bestellshop"
 ```
 
 macOS / Linux:
 
 ```bash
-git clone https://github.com/HofZeitV12/kunden-bestellshop.git /tmp/kunden-bestellshop
-cp -r /tmp/kunden-bestellshop/* ~/.cursor/skills/kunden-bestellshop/
+git clone https://github.com/HofZeitV12/kunden-bestellshop.git \
+  ~/.cursor/skills/kunden-bestellshop
 ```
 
 Danach in Cursor `/kunden-bestellshop` aufrufen.
 
 > **Tipp:** Im eigenen Projektordner liegt der Skill unter `.cursor/skills/`. Ein Skill
-> in einem Workspace gilt **nur für diesen Workspace**. Für projektübergreifend in den
-> Agent-Store kopieren (siehe oben).
+> in einem Workspace gilt **nur für diesen Workspace**. Für projektübergreifend direkt
+> nach `~/.cursor/skills/` installieren (siehe oben).
+
+> ⚠️ **Den Skill nicht doppelt ablegen.** Liegt er **gleichzeitig** im Workspace
+> (`.cursor/skills/`), im Agent-Store **und** in `~/.cursor/skills/`, lädt der Agent
+> irgendwann die **veraltete** Fassung — und die Fehlersuche beginnt an der falschen
+> Stelle. Der Ordnername muss immer `kunden-bestellshop` heißen, sonst lädt der Skill
+> nicht. Das Repo ist die **einzige Quelle**.
 
 ---
 
@@ -91,11 +101,32 @@ Kunden-Schlüssel tragen.
 
 ---
 
+## Kosten und Mengengrenzen (Stand 03.10.2026)
+
+Der Betrieb des Musters ist bewusst **kostengünstig**. Die Grenzen entscheiden, wie
+viele Kunden möglich sind:
+
+| Baustein | Tarif im Muster | Grenze |
+|---|---|---|
+| **GitHub** | kostenlos | privater Speicherplatz — unkritisch |
+| **Vercel** | **Hobby** (kostenlos) | Git-Autor muss Team-Mitglied sein; Team-Scope beachten |
+| **Supabase** | **Free/Hobby** | eine Instanz pro Kunde → viele kleine Instanzen, nicht eine große geteilte |
+| **Hetzner** | Cloud-Server-**Abo** (einstelliger bis ~19 €/Monat) | **1 Server trägt mehrere Kunden** — dann getrennte Container/Ports/`.env`, nie geteilter Mail-Absender |
+| **Stripe** | pro Konto | Gebühren pro Transaktion; **eigenes Konto pro Kunde** empfohlen |
+| **Resend** | **Free-Tier: 3 Domains**, 3.000 Mails/Monat | ⚠️ **die aktuelle Mengengrenze** — ab dem 4. Kunden höherer Tarif nötig |
+
+> ⚠️ **Resend ist der Flaschenhals.** Jeder Kunde braucht eine **eigene verifizierte
+> Absender-Domain**; der Free-Tier erlaubt **3**. Höherer Tarif einplanen, bevor mehr
+> als drei Kunden dazukommen.
+
+---
+
 ## Dateien
 
 | Datei | Zweck |
 |---|---|
 | `SKILL.md` | **Der Einstieg.** Ablauf, Entscheidungsbaum, Kurzfassung |
+| `references/referenz-leckerbissen.md` | **Das konkrete Muster** (Leckerbissen ↔ WinOrder): Funktionen, Live-Nachweis, Klon-Fahrplan, Werkzeug-Grenzen |
 | `references/intake.md` | Fragebogen + Ergebnisform |
 | `references/infrastruktur.md` | Supabase, Vercel, Stripe, Hetzner je Kunde |
 | `references/architektur.md` | Verifizierte Architektur der Vorlage (Datenfluss, Tabellen, Dateipfade, Env-Katalog) |

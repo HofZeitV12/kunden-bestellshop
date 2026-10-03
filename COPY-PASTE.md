@@ -13,10 +13,10 @@ und arbeite den Skill vollständig ab. Lies die references/*.md erst, wenn du an
 jeweiligen Stelle bist.
 
 Neuer Kunde: <Name des Restaurants>
-Vorlage: die Referenz-Bestell-Website (Online-Bestell-Website mit Kassensystem-
-Anbindung); URL dem Auftrag entnehmen.
-Ziel: derselbe Bestellweg (Website → Zahlung → Bon auf dem Kassensystem), eigenes
-Branding, eigene Infrastruktur.
+Vorlage: das Muster „Leckerbissen" (https://www.leckerbissen.online) — eine
+Online-Bestell-Website mit WinOrder-Kassen-Anbindung und Bon am STAR mPOP.
+Ziel: derselbe Bestellweg (Website → Zahlung → Bon auf dem Kassensystem), dieselben
+Funktionen, eigenes Branding, eigene Infrastruktur.
 
 Beginne mit Schritt 1 (Intake) und stelle erst die Fragen, bevor du baust.
 ```
@@ -29,8 +29,8 @@ Beginne mit Schritt 1 (Intake) und stelle erst die Fragen, bevor du baust.
 Nutze den Skill /kunden-bestellshop (Ordner .cursor/skills/kunden-bestellshop).
 
 Neuer Kunde: <Name>
-Vorlage: die Referenz-Bestell-Website (Online-Bestell-Website mit Kassensystem-
-Anbindung)
+Vorlage: das Muster „Leckerbissen" (https://www.leckerbissen.online) — Bestell-Website
+mit WinOrder-Kassen-Anbindung
 Ziel: gleicher Bestellweg, neue Marke, eigene Infrastruktur.
 
 Erst fragen (references/intake.md), dann bauen. Warte auf meine Antworten.
@@ -45,8 +45,8 @@ Lies SKILL.md im Projektstamm und arbeite ihn vollständig ab. Die Vertiefungen 
 unter references/ — lies sie erst, wenn du an der Stelle bist.
 
 Neuer Kunde: <Name>
-Vorlage: die Referenz-Bestell-Website (Online-Bestell-Website mit Kassensystem-
-Anbindung)
+Vorlage: das Muster „Leckerbissen" (https://www.leckerbissen.online) — Bestell-Website
+mit WinOrder-Kassen-Anbindung
 Beginne mit Schritt 1 (Intake) und warte auf meine Antworten.
 ```
 
@@ -58,8 +58,8 @@ Beginne mit Schritt 1 (Intake) und warte auf meine Antworten.
 Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
 
 Erstelle mir NUR einen Plan (kein Code): welche Schritte, welche Dateien, welche
-Entscheidungen sind für den Kunden <Name> nötig, ausgehend von der Referenz-Bestell-
-Website (Online-Bestell-Website mit Kassensystem-Anbindung)? Nenne offene Fragen getrennt.
+Entscheidungen sind für den Kunden <Name> nötig, ausgehend von dem Muster
+„Leckerbissen" (Bestell-Website mit WinOrder-Kassen-Anbindung)? Nenne offene Fragen getrennt.
 ```
 
 ---
@@ -94,6 +94,6 @@ Zeige mir zuerst den Plan und die betroffenen Stellen, dann bauen.
 ## Kurz-Prompt (wenn es schnell gehen soll)
 
 ```
-/kunden-bestellshop  Neuer Kunde: <Name>. Vorlage: die Referenz-Bestell-Website
-(Online-Bestell-Website mit Kassensystem-Anbindung). Erst fragen, dann bauen.
+/kunden-bestellshop  Neuer Kunde: <Name>. Vorlage: das Muster „Leckerbissen"
+(Bestell-Website mit WinOrder-Kassen-Anbindung). Erst fragen, dann bauen.
 ```

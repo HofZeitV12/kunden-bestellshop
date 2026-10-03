@@ -25,7 +25,7 @@ sonst alle stoppen, Bauverzeichnis löschen, neu bauen.
 
 | Bereich | Prüfung | Erwartet |
 |---|---|---|
-| Code | `npm run check` (Lint · Typen · Bau) | **grün** |
+| Code | Projekt-Prüfbefehl (**erst `package.json` lesen** — Name ist pro Projekt verschieden) | **grün** |
 | Geheimnisse | Repo nach Schlüssel-Präfixen durchsuchen | **kein Treffer** |
 | Geheimnisse | Ignorierliste greift (Testdatei anlegen) | wird **nicht** angezeigt |
 | Schema | doppelte Migrationskennungen | **leere** Ausgabe |
