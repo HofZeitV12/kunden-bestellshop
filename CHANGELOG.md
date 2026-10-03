@@ -9,6 +9,23 @@ ergänzen und mit `git push` veröffentlichen (siehe `README.md` → „Aktualis
 
 ---
 
+## 2026-10-03 (abends) — Konsistenz nach der Muster-Umstellung
+
+**Anlass:** Nach dem Umbenennen der Vorlage auf das konkrete Muster blieben drei
+Stellen widersprüchlich. Korrigiert, damit die GitHub-Seite in sich stimmig ist.
+
+| Commit | Inhalt |
+|---|---|
+| `af49077` | `README.md` „Herkunft": **nicht mehr** „neutralisiert" (widersprach dem offen benannten Muster). Klarstellung: das **Muster ist benannt**, Zugangsdaten bleiben draußen — deshalb darf das Repo öffentlich sein. `README.md` Ablauf **Schritt 0** auf „Muster „Leckerbissen" live kontrollieren" gezogen (vorher generisch). |
+
+**Für den Agenten:** geprüft am 03.10.2026 — kein Widerspruch mehr zwischen
+`SKILL.md`, `README.md`, `CHANGELOG.md` und `references/*`. Die Notizen für andere
+Agenten stehen hier im Changelog; die ausführliche Analyse (Dateiliste,
+Abweichungstabelle, MCP-Stand, Live-Nachweis) liegt als Canvas
+`skill-audit-kunden-bestellshop` im Cursor-Projekt `c-Users-lecke-Downloads-WinOrder`.
+
+---
+
 ## 2026-10-03 (abends) — Skill als GitHub-Quelle sichtbar gemacht
 
 **Ziel:** Der Skill soll **auf GitHub sichtbar** sein — **nicht** auf einem lokalen
