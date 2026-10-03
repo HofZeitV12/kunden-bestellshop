@@ -165,18 +165,7 @@ viele Kunden möglich sind:
 
 ---
 
-## Als Cursor-Skill in einem eigenen Repo aktualisieren
-
-```powershell
-cd <dieses-repo>
-git pull
-# Änderungen …
-git add -A
-git commit -m "Skill: …"
-git push
-```
-
-## Änderungen sofort für alle Rechner verfügbar machen
+## Aktualisieren — und sofort auf allen Rechnern verfügbar
 
 Der Skill gehört **nicht** auf den Kunden-PC und **nicht** in ein Kundenprojekt. Er ist
 die **Vorlage**: er liegt hier im Repo und wird von überall geladen.
