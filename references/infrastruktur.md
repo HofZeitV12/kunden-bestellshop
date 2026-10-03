@@ -110,7 +110,9 @@ git config user.email <erlaubter-autor@users.noreply.github.com>
 - [ ] Neue Supabase-Instanz anlegen (Region passend zum Kunden — EU, wenn EU-Kunde)
 - [ ] Als **MCP** verbinden, um Schema und Inhalte zu prüfen
 - [ ] Migrationen aus der Vorlage **in der richtigen Reihenfolge** anwenden
-      (der Vorlage-Migrationsordner ist die Quelle)
+      (der Vorlage-Migrationsordner ist die Quelle — **vom aktuellen `origin/main`**,
+      nicht von einem alten lokalen Stand; siehe `references/referenz-leckerbissen.md`
+      Abschnitt 8.1)
 - [ ] Menü-Seed einspielen (Kunden-Menü, nicht das des Vorbilds)
 - [ ] `project_memory` → `arch.store_config` mit den **Kunden**-Stammdaten füllen
 - [ ] Sicherheits- und Leistungshinweise der Instanz abrufen und **abarbeiten**
@@ -131,12 +133,13 @@ select content from public.project_memory where key = 'arch.store_config';
 | `menultems` | Speisekarte (Name historisch, **nicht** umbenennen) | **kein** Kunden-Schlüssel in der Vorlage → eigene Instanz |
 | `project_memory` | Wissensspeicher; Key `arch.store_config` = Stammdaten (Laufzeit-Interface) | **kein** Kunden-Schlüssel in der Vorlage |
 
-- [ ] Typen generieren und committen (Vorlage: `npm run gen-types` o. ä.)
+- [ ] Typen generieren und committen (Skriptname **zuerst `package.json` lesen**)
 
-> ⚠️ **Die Skript-Namen sind pro Projekt verschieden.** Im Muster existiert **kein**
-> `check` und **kein** `gen-types` — vorhanden sind `dev`, `build`, `start`, `lint`,
-> `gen-icons` (siehe `package.json`). **Immer erst `package.json` lesen**, dann den
-> Typen-/Prüfbefehl nennen. Ein erfundener Skriptname ist ein toter Befehl.
+> ⚠️ **Die Skript-Namen hängen am Stand des Vorlage-Repos.** Am **03.10.2026** hat die
+> Vorlage `dev`, `build`, `start`, `lint`, `types` (`tsc --noEmit`), `check`
+> (`lint` + `types` + Verweisprüfung + `build`), `suche` und `gen-icons`. Ein **älterer
+> lokaler Stand** hatte nur `dev/build/start/lint/gen-icons`. Ein erfundener oder
+> veralteter Skriptname ist ein toter Befehl — **immer erst `package.json` lesen**.
 
 > ⚠️ **Kundenkennung konsequent setzen.** Wenn die Bestelltabelle eine Kundenspalte
 > hat, muss **jede** Bestellung und **jeder** Filter sie benutzen. Sonst liefert der

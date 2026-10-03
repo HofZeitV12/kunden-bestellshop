@@ -224,13 +224,16 @@ des Anbieters.
 | Supabase | Instanzen auflisten, Zielinstanz wählen | Status **healthy** |
 | Supabase | Tabellen + Zeilen lesen (`orders`, `menultems`, `project_memory`) | vorhanden, plausibel |
 | Supabase | Sicherheits-/Leistungshinweise abrufen | keine kritischen offen |
+| Supabase | MCP-Zugriff auf die Zielinstanz (nicht jede ist freigegeben!) | sonst **HTTP-API** als Ersatzweg |
 | Vercel | Projekte des Teams auflisten | Kundenprojekt gelistet |
 | Vercel | Umgebungsvariablen prüfen (Namen, Modus) | vollständig, richtiger Modus |
 | Vercel | **Git-Autor** = Team-Mitglied (bei Hobby-Pflicht!) | Deploy **nicht** „not a member" |
 | GitHub | Repo + Hauptzweig lesen, `.env.example` | nur Platzhalter |
+| GitHub | **Vorlage auf `origin/main` aktualisieren** (`git rev-list --count HEAD..origin/main` = 0) | kein Fork von altem Stand |
 | Hetzner | Server auflisten, Zielserver lesen | **running**, Firewall aktiv |
 | Hetzner | Firewall-Regeln lesen | nur 22/80/443 (+ Diagnose-Port) |
 | Hetzner | Container-Health (`/health`) | **200 `status: ok`** |
+| Hetzner | Diagnose-Port (`11436` o. ä.) von hier erreichbar? | sonst **SSH-Tunnel** über Port 22 |
 | Stripe | Webhook-Endpunkte im Dashboard | `livemode`, `url`, `status` je Endpunkt |
 | Live | Website, `/api/menu`, `/api/store` | **HTTP 200** |
 | Live | Export **ohne** Key; Diagnose **ohne** Token | **HTTP 401** |

@@ -91,6 +91,20 @@ Das ist der „gleiche Aufbau". Ein Fork startet mit **genau dieser Oberfläche*
 > ob die Webservice-URL auf `…/api` oder `…/api/winorder` zeigt. Alle Varianten werden
 > bedient, damit eine Fehlkonfiguration nicht zu einem stillen Ausfall führt.
 
+**Funktionen, die neu dazugekommen sind** (Stand 03.10.2026 — die Liste oben ist die
+**Form**, kein eingefrorener Katalog):
+
+- **Deterministische Volltextsuche** über den Wissensspeicher (`npm run suche`,
+  SQL-Funktion über `project_memory`) — **bewusst ohne** Vektoren/RAG (Eigennamen,
+  Nummern, Kennungen). Ein Fork kann sie mitnehmen oder weglassen; sie berührt den
+  Bestellweg **nicht**.
+- Zusätzliche Admin-/Diagnose-Route `app/api/debug/route.ts` (hinter Basic Auth). Eine
+  neue Route im Fork heißt: die **öffentliche** Middleware-Liste gegenprüfen — sonst
+  wird etwas versehentlich öffentlich oder blockiert.
+
+> **Vor dem Fork den aktuellen Stand ablesen** (siehe Abschnitt 8.1), nicht diese
+> Tabelle als eingefroren behandeln.
+
 **Funktionen**
 
 - Menü aus der Datenbank, **Preise serverseitig neu gerechnet** (nie aus dem Browser)
@@ -205,17 +219,43 @@ Marke und eigener Umgebung. Reihenfolge (Details in der jeweiligen Referenz):
 
 Ehrlich festgehalten, damit kein Agent „alles automatisch" verspricht:
 
-| Werkzeug | Im Muster verfügbar | Grenze |
+Nachgeprüft am **03.10.2026, abends** (die Lage ändert sich — vor jeder Aussage neu prüfen):
+
+| Werkzeug | Stand am 03.10.2026 | Grenze / Ersatzweg |
 |---|---|---|
-| **GitHub MCP** | ✅ autorisiert als der Projekt-Inhaber | Repo-Zugriff hängt am Konto |
-| **Supabase MCP** | ⚠️ Projekt ist **im MCP nicht freigegeben** (`no permission`) | für dieses Muster nur über die **HTTP-API** auslesbar; für neue Kunden Instanz als MCP verbinden |
-| **Vercel MCP** | ⚠️ Nutzer-Ebene ja, **Team-Scope verweigert** (403 „re-authenticate") | Vercel-Umgebungen über Dashboard/CLI prüfen, bis der Scope neu autorisiert ist |
-| **Hetzner MCP** | ❌ **Verbindung im Fehlerzustand** (Tool-Discovery fehlgeschlagen) | Server **per SSH** prüfen (`references/infrastruktur.md`, Abschnitt 5) |
-| **Resend MCP** | ✅ autorisiert | zeigt Domains/Usage, aber **nicht** das Tagesgeschäft der Mails |
+| **GitHub MCP** | ✅ autorisiert als Projekt-Inhaber (7 private Repos) | Repo-Zugriff hängt am Konto |
+| **Resend MCP** | ✅ autorisiert | zeigt Domains + Usage, **nicht** das Tagesgeschäft der Mails |
+| **Vercel MCP** | ✅ **antwortet wieder** (5 Projekte, Deploys `READY`) | war am Vormittag noch `403` („re-authenticate"). Ein Token/Scope kann **jederzeit** wieder ablaufen — erneut prüfen, nicht annehmen |
+| **Supabase MCP** | ❌ Zielprojekt **nicht freigegeben** (`no permission` bei Tabellen/Advisors, Projektliste leer) | Muster nur über die **HTTP-API** auslesbar; für neue Kunden die eigene Instanz als MCP verbinden |
+| **Hetzner MCP** | ❌ **nicht erreichbar** — Diagnose-Port `11436` von diesem Rechner **geschlossen** (443/22 offen); `mcp_auth` läuft in einen Timeout | Der Port hängt an einer **IP-Freigabeliste** der Hetzner-Firewall. Weg: **SSH-Tunnel** über Port 22 (bleibt ohne Firewall-Änderung nutzbar), sonst Firewall-Regel für die eigene IP |
 
 > **Merksatz:** Ein MCP grün zu *nennen* ist kein Nachweis. Jede Aussage braucht den
 > **ausgeführten** Befehl — und wenn ein MCP fehlt, wird ersatzweise per **HTTP/SSH/
 > Dashboard** geprüft (siehe `SKILL.md` → Diagnose).
+
+### 8.1 Die Vorlage ist **nicht eingefroren** — immer vom aktuellen Stand klonen
+
+Die Vorlage (das private Repo des Musters) wird **weiterentwickelt**. Ein Fork, der von
+einem **alten lokalen Arbeitsstand** abzweigt, erbt veraltete Skripte und ein altes
+Schema. Zwei belegte Beispiele vom **03.10.2026**:
+
+- `package.json` der Vorlage hat heute **`check`, `types`, `suche`** — ein älterer
+  lokaler Stand hatte nur `dev/build/start/lint/gen-icons`. Der Prüfbefehl hängt also
+  vom **Stand**, nicht nur vom Projekt ab.
+- `supabase/migrations/` hat heute einen **älteren + einen neueren Satz** (u. a. eine
+  Migration für Volltextsuche über `project_memory`). Wer von einem alten Stand klont,
+  verliert sie.
+
+**Regel:**
+
+```bash
+git fetch origin
+git rev-list --count HEAD..origin/main     # 0 = aktuell; >0 = veraltet
+```
+
+Vor dem Fork **auf `origin/main` aktualisieren** (oder direkt von `origin/main` klonen)
+und anschließend `package.json` **und** `supabase/migrations/` am aktuellen Stand
+ablesen — nie aus dem Gedächtnis.
 
 ---
 

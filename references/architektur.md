@@ -120,8 +120,16 @@ Spalten, die der Bestellweg nutzt (verifiziert):
 
 ### Tabelle `project_memory` (Wissensspeicher + Laufzeit-Config)
 
-Key-Value-Speicher mit Historie (`project_memory_history`, append-only). Konvention:
-`key = <bereich>.<thema>`.
+Key-Value-Speicher, Konvention `key = <bereich>.<thema>`. Seit dem **29.09.2026** hat
+die Vorlage zusätzlich eine **generierte Volltext-Spalte** (`suchvektor`, Sprache
+`german`) samt `GIN`-Index und einer SQL-Suchfunktion — **deterministisch, ohne
+Vektoren**. Ein Fork muss das **nicht** übernehmen (der Bestellweg braucht es nicht),
+der aktuelle Stand hat es aber.
+
+> ⚠️ **Ausdrücklich NICHT bestätigt:** eine separate Tabelle `project_memory_history`.
+> Eine Historientabelle steht **nirgends** im Vorlage-Code (Suche am 03.10.2026: kein
+> Treffer). Wenn ein Fork eine Versionshistorie will, ist das eine **neue** Anforderung
+> — nicht als vorhandene Vorlage-Eigenschaft annehmen.
 
 > ⚠️ **Exaktes DDL.** Migrationen und Prüfcode müssen die echten Spalten treffen:
 > `project_memory` hat **`key` + `content`** (nicht `value`); `menultems` hat

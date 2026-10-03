@@ -134,6 +134,18 @@ MCP fehlt oder streikt, **ersatzweise** per HTTP, SSH oder Dashboard prüfen. Ei
 Werkzeug zu besitzen heißt nicht, es nutzen zu können. Die beobachteten Grenzen stehen
 in `references/referenz-leckerbissen.md`, Abschnitt 8.
 
+### Falle 14 — Vom veralteten Arbeitsstand geklont
+
+Die Vorlage wird weiterentwickelt. Ein Fork von einem **alten lokalen Stand** erbt
+veraltete Skripte und ein altes Schema. Am **03.10.2026** belegt: der lokale
+Arbeitsstand der Vorlage war **8 Commits hinter `origin/main`** — `package.json` hatte
+dort noch **kein** `check`/`types`/`suche`, und eine neuere Migration fehlte.
+
+**Regel:** Vor dem Fork **aktualisieren** (`git fetch` + `git rev-list --count
+HEAD..origin/main` muss **0** sein) oder direkt von `origin/main` klonen. Skriptnamen
+und Migrationen **am aktuellen Stand** ablesen, nie aus dem Gedächtnis. Details:
+`references/referenz-leckerbissen.md`, Abschnitt 8.1.
+
 ---
 
 ## Verbote
