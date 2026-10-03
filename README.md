@@ -106,7 +106,7 @@ Der Agent arbeitet sieben Schritte ab. Jeder endet mit einer Meldung: was entsta
 womit geprüft, was offen.
 
 ```
-0  Vorlage prüfen        Referenz-Bestell-Website live kontrollieren
+0  Vorlage prüfen        Muster „Leckerbissen" live kontrollieren
 1  Kunde befragen        Stammdaten, Zonen, Zeiten, Kasse, Domain
 2  Projekt anlegen       Repo, Supabase, Vercel, Stripe, Hetzner
 3  Entbranden            Logo, Farben, Texte, Kennungen
@@ -198,5 +198,10 @@ Agent-Store), lädt sonst irgendwann die **veraltete** Fassung.
 
 Abgeleitet aus einem real betriebenen Online-Bestellshop mit Kassensystem-Anbindung und
 Bon-Druck. Alle Regeln stammen aus tatsächlichen Schäden: Massendruck, offene
-Datenbanken, vertauschte Secrets, verlorene Arbeit. Die Beispiele sind neutralisiert —
-keine Branche, kein Anbietername, kein Projektname.
+Datenbanken, vertauschte Secrets, verlorene Arbeit.
+
+> **Hinweis zur Namensgebung:** Das **Muster** ist offen benannt („Leckerbissen" ↔
+> WinOrder) — es ist die Vorlage und beweist, dass der Weg funktioniert. Zugangsdaten,
+> Server-IPs, Datenbank-Kennungen und Keys stehen **nicht** im Repo; sie bleiben in den
+> Umgebungen der einzelnen Kundenprojekte. Deshalb ist dieses Repo **öffentlich** und
+> trotzdem unbedenklich.
