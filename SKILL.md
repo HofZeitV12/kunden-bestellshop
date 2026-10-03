@@ -252,6 +252,11 @@ Ein Kundenprojekt ohne Doku gilt als **nicht fertig**. Nach dem Aufsetzen:
 `docs/entscheidungen/` (warum), `docs/RUNBOOK.md` (Störfall). Vorlage und Ablauf:
 Skill **`project-blueprint`**.
 
+> 🤝 **Notiz für andere Agenten:** Änderungen an **diesem** Skill stehen in
+> [`CHANGELOG.md`](CHANGELOG.md) (neueste zuerst). Wer den Skill auf einem anderen
+> Rechner laden soll, liest zuerst `README.md` → „Auf einem anderen Computer nutzen"
+> und dort das `CHANGELOG.md` — so ist klar, welcher Stand gilt und was zu beachten ist.
+
 ---
 
 ## Referenzen

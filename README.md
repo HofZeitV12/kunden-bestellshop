@@ -153,6 +153,7 @@ viele Kunden möglich sind:
 | Datei | Zweck |
 |---|---|
 | `SKILL.md` | **Der Einstieg.** Ablauf, Entscheidungsbaum, Kurzfassung |
+| [`CHANGELOG.md`](CHANGELOG.md) | **Notiz für jeden Agenten:** was zuletzt geändert wurde und was zu beachten ist |
 | `references/referenz-leckerbissen.md` | **Das konkrete Muster** (Leckerbissen ↔ WinOrder): Funktionen, Live-Nachweis, Klon-Fahrplan, Werkzeug-Grenzen |
 | `references/intake.md` | Fragebogen + Ergebnisform |
 | `references/infrastruktur.md` | Supabase, Vercel, Stripe, Hetzner je Kunde |
