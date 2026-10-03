@@ -5,6 +5,18 @@ description: Eine Online-Bestell-Website fuer Kassensysteme in Deutschland (Spei
 
 # Online-Bestell-Website für Kassensysteme aufsetzen (Deutschland)
 
+> 🌐 **Dieser Skill liegt auf GitHub — nicht auf einem Rechner.** Das ist die einzige
+> Quelle und für **jeden Agenten sichtbar**:
+> **<https://github.com/HofZeitV12/kunden-bestellshop>**
+>
+> In einen fremden Chat laden (nur diese URL, kein Klon nötig):
+> ```
+> Lade https://raw.githubusercontent.com/HofZeitV12/kunden-bestellshop/main/SKILL.md
+> und arbeite danach. Lies die references/*.md erst, wenn du an der Stelle bist.
+> ```
+> **Was zuletzt geändert wurde**, steht in `CHANGELOG.md` (im selben Repo) — dort zuerst
+> nachsehen, damit kein veralteter Stand benutzt wird.
+
 Ein **erprobtes, live betriebenes Bestellsystem** wird zur **Vorlage**. Pro Kunde
 entsteht daraus ein **eigenes Projekt** mit eigenem Logo, eigener Infrastruktur und
 eigener Kasse — **gleiches Konzept, nicht gleiche Umgebung**.

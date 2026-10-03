@@ -1,5 +1,10 @@
 # Online-Bestell-Website für Kassensysteme — Skill
 
+> 🌐 **Auf GitHub, nicht lokal.** Die einzige Quelle und für **jeden Agenten sichtbar**:
+> **<https://github.com/HofZeitV12/kunden-bestellshop>**. Kein Klon nötig — der Skill
+> kann direkt über die Roh-URL geladen werden (siehe unten). Änderungen stehen in
+> [`CHANGELOG.md`](CHANGELOG.md).
+
 **Ein erprobtes Restaurant-Bestellsystem als Vorlage nehmen und für einen neuen Kunden
 aufsetzen** — eigenes Branding, eigene Infrastruktur, eigene Kasse.
 

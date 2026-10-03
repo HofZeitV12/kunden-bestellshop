@@ -9,6 +9,22 @@ ergänzen und mit `git push` veröffentlichen (siehe `README.md` → „Aktualis
 
 ---
 
+## 2026-10-03 (abends) — Skill als GitHub-Quelle sichtbar gemacht
+
+**Ziel:** Der Skill soll **auf GitHub sichtbar** sein — **nicht** auf einem lokalen
+Rechner. Ein fremder Agent lädt ihn über die Roh-URL, ohne Klon.
+
+| Commit | Inhalt |
+|---|---|
+| `f030c06` | `CHANGELOG.md` angelegt (diese Datei) + Verweise in `README.md`/`SKILL.md` |
+| danach | Hinweis „liegt auf GitHub, nicht lokal" oben in `SKILL.md` und `README.md` |
+
+**Für den Agenten:** die einzige Quelle ist das **öffentliche** Repo
+`HofZeitV12/kunden-bestellshop`, Branch `main` → `SKILL.md`. `CHANGELOG.md` zuerst
+lesen, damit kein veralteter Stand benutzt wird.
+
+---
+
 ## 2026-10-03 (abends) — Audit gegen das laufende Muster „Leckerbissen"
 
 **Geprüft:** der Skill (16 Dateien), das Vorlage-Repo `HofZeitV12/leckerbissen-speisekarte`
